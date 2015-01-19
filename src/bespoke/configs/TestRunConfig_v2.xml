@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<TestRunConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\xsd\test_plan_config.xsd" version="3">
+  
+  <!-- A description of the test run to be used for test results. -->
+  <Description>Death Ray Tests</Description>
+  
+  <!-- E-mail configuration -->
+  <EmailSender>bespoke@fancylads.com</EmailSender>
+  <EmailSubject>Death Ray Test Results</EmailSubject>
+  <EmailRecipients>
+    <EmailRecipient>rgard@fancylads.com</EmailRecipient>
+    <EmailRecipient>cmoniot@fancylads.com</EmailRecipient>
+  </EmailRecipients>
+  <SMTPServer port="587">bespoke.fancylads.local</SMTPServer>
+  
+  <!--Support security_types of TLS, SSL, basic-->
+  <SMTPCredentials security_type="TLS" self_signed="false">
+    <Username>Fred</Username>
+    <Password>punchbowl</Password>
+  </SMTPCredentials>
+  
+  <!--It is required that you specify at least one tools config to use.-->
+  <!-- These paths are all relative to the ConfigPath -->
+  <ToolConfigs>
+    <ToolConfig>ToolConfig_1.xml</ToolConfig>
+  </ToolConfigs>
+  
+  <!-- These paths are all relative to the ConfigPath -->
+  <BuildConfigs>
+    <BuildConfig>BuildConfig_1.xml</BuildConfig>
+  </BuildConfigs>
+  
+  <!--The test plans associated with this test plan config.-->
+  <!--This can be empty, but then you'll need to define at least one test plan via the cmd line.-->
+  <!-- These paths are all relative to the TestPlanPath -->
+  <TestPlans>
+    <TestPlan>DeathRay_TestPlan.xml</TestPlan>
+  </TestPlans>
+  
+</TestRunConfig>

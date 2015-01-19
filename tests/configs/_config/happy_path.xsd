@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" 
+           elementFormDefault="qualified" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <!--SIMPLE TYPES-->
+  <xs:simpleType name="validPath">
+    <xs:restriction base="xs:normalizedString">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="260"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--END SIMPLE TYPES-->
+  
+  <!--COMPLEX TYPES-->
+  <xs:complexType name="complexStuffType">
+    <xs:all>
+      <xs:element name="Path" type="validPath" />
+      <xs:element name="Stuff" type="xs:normalizedString" />
+      <xs:element name="Numbers" type="xs:positiveInteger" />
+    </xs:all>
+  </xs:complexType>
+  
+  <!--This defines the allowed content in the "GlobalConfig" element.-->
+  <xs:complexType name="configType">
+    <xs:all>
+      <xs:element name="Path" type="validPath"/>
+      <xs:element name="Stuff" type="xs:normalizedString" />
+      <xs:element name="Numbers" type="xs:positiveInteger" />
+      <xs:element name="ComplexStuff" type="complexStuffType"/>
+    </xs:all>
+    <xs:attribute name="version" type="xs:positiveInteger" use="required" />
+  </xs:complexType>
+  <!--END COMPLEX TYPES-->
+  
+  <!--ELEMENTS-->
+  <!--This is the main element in the XML config file.-->
+  <xs:element name="Config" type="configType" />
+  <!--END ELEMENTS-->
+</xs:schema>

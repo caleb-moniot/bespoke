@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--SIMPLE TYPES-->
+  <xs:simpleType name="sourceTypesEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="no_copy" />
+      <xs:enumeration value="basic_copy" />
+      <xs:enumeration value="ftp_copy" />
+      <xs:enumeration value="http_copy" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="installTypesEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="basic_install" />
+      <xs:enumeration value="msi_install" />
+      <xs:enumeration value="no_install" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="archTypesEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="x86" />
+      <xs:enumeration value="x64" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="osTypesEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Windows" />
+      <xs:enumeration value="Linux" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--END SIMPLE TYPES-->
+  
+  <!--COMPLEX TYPES-->
+  <!--Used to store properties for different source and install method types.-->
+  <xs:complexType name="dictionaryType">
+    <xs:simpleContent>
+      <xs:extension base="xs:normalizedString">
+        <xs:attribute name="name" type="xs:normalizedString" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <!--Used for holding information on how to retrieve and stage the tool.-->
+  <xs:complexType name="complexSourceDictionaryType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Property" type="dictionaryType"/>
+    </xs:choice>
+    <xs:attribute name="type" type="sourceTypesEnum" use="required"/>
+    <xs:attribute name="copy_once" type="xs:boolean" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="complexInstallDictionaryType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Property" type="dictionaryType"/>
+    </xs:choice>
+    <xs:attribute name="type" type="installTypesEnum" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="complexTargetOSType">
+    <xs:simpleContent>
+      <xs:extension base="osTypesEnum">
+        <xs:attribute name="arch_type" type="archTypesEnum" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <!--Used for specify information for any given build.-->
+  <xs:complexType name="buildType">
+    <xs:all>
+      <xs:element name="Name" type="xs:normalizedString" />
+      <xs:element name="Version" type="xs:normalizedString" />
+      <xs:element name="TargetOS" type="complexTargetOSType" />
+      <xs:element name="Source" type="complexSourceDictionaryType" />
+      <xs:element name="InstallMethod" type="complexInstallDictionaryType" />
+    </xs:all>
+  </xs:complexType>
+
+  <!--This defines the allowed content in the "BuildConfig" element.-->
+  <xs:complexType name="buildConfigType">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="Build" type="buildType" />
+    </xs:choice>
+    <xs:attribute name="version" type="xs:positiveInteger" use="required" />
+  </xs:complexType>
+  <!--END COMPLEX TYPES-->
+  
+  <!--ELEMENTS-->
+  <!--This is the main element in the XML config file.-->
+  <xs:element name="BuildConfig" type="buildConfigType" />
+  <!--END ELEMENTS-->
+</xs:schema>

@@ -1,0 +1,12 @@
+python modules:
+lxml
+zsi
+pyxml
+pywin32
+
+External Deps:
+VirtualBox
+VirtualBox Extensions
+ViruualBox API Extensions
+STAF
+

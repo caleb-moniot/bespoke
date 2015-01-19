@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestPlan name="Compiler_Test_Plan" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\xsd\test_plan.xsd" version="3">
+  
+  <!--Start Test Case-->
+  <TestCase name="Windows_2008_x64_Test">
+    <ResourceInit>
+      <PrepareVirtualMachine resource_id="Test_System">
+        <VirtualMachine>Win-2k8-R2-64</VirtualMachine>
+        <Checkpoint>ReadyToAutoTest</Checkpoint>
+        <Tools>
+          <Tool>Python_2.7</Tool>
+          <Tool>FL_Python_Lib</Tool>
+        </Tools>
+        <Builds>
+          <Build>Fancy_Lads_Compiler_2.0</Build>
+        </Builds>
+        <PostWait>5</PostWait>
+        <TimeOut>600</TimeOut>
+        <RestartComputer wait="true">true</RestartComputer>
+      </PrepareVirtualMachine>
+    </ResourceInit>
+    <TestSteps>
+      <Step>
+        <Description>Valid Compiler Test Step</Description>
+        <ResourceID>Test_System</ResourceID>
+        <Directory>Fancy_Lads\Compiler_Tests</Directory>
+        <Interpreter></Interpreter>
+        <Executable>Compiler_Valid.exe</Executable>
+        <!--All Bespoke environment variables should begin with BS otherwise system env is used -->
+        <ExecParams>
+          <Param name="--resultsPath">%BS|RESULTSPATH%</Param>
+          <Param name="--cwd">%BS|CWD%</Param>
+          <Param name="--hostname">%BS|Test_System%</Param>
+        </ExecParams>
+        <PostWait>5</PostWait>
+        <TimeOut>600</TimeOut>
+        <RestartComputer wait="true">false</RestartComputer>
+      </Step>
+      
+      <RefreshResource>
+        <ResourceID>Test_System</ResourceID>
+        <RestartComputer wait="true">true</RestartComputer>
+      </RefreshResource>
+      
+      <Step>
+        <Description>Invalid Compiler Test Step</Description>
+        <ResourceID>Test_System</ResourceID>
+        <Directory>Fancy_Lads\Compiler_Tests</Directory>
+        <Interpreter></Interpreter>
+        <Executable>Compiler_Invalid.exe</Executable>
+        <!--All environment variables should begin with BS for Bespoke otherwise system env is used -->
+        <ExecParams>
+          <Param name="--resultsPath">%BS|RESULTSPATH%</Param>
+          <Param name="--cwd">%BS|CWD%</Param>
+          <Param name="--hostname">%BS|Test_System%</Param>
+        </ExecParams>
+        <PostWait>5</PostWait>
+        <TimeOut>600</TimeOut>
+        <RestartComputer wait="true">false</RestartComputer>
+      </Step>
+    </TestSteps>
+  </TestCase>
+  <!--End Test Case-->
+  
+  <!--Start Test Case-->
+  <TestCase name="Windows_7_x64_Test">
+    <ResourceInit>
+      <PrepareVirtualMachine resource_id="Server1">
+        <VirtualMachine>WIN-7-64</VirtualMachine>
+        <Checkpoint>ReadyToAutoTest</Checkpoint>
+        <Tools>
+          <Tool>Python_2.7</Tool>
+          <Tool>FL_Python_Lib</Tool>
+        </Tools>
+        <Builds>
+          <Build>Fancy_Lads_Compiler_2.0</Build>
+        </Builds>
+        <PostWait>5</PostWait>
+        <TimeOut>600</TimeOut>
+        <RestartComputer wait="true">true</RestartComputer>
+      </PrepareVirtualMachine>
+    </ResourceInit>
+    <TestSteps>
+      <Step>
+        <Description>Valid Compiler Test Step</Description>
+        <ResourceID>Server1</ResourceID>
+        <Directory>Fancy_Lads\Compiler_Tests</Directory>
+        <Interpreter></Interpreter>
+        <Executable>Compiler_Valid.exe</Executable>
+        <!--All environment variables should begin with BESPOKE otherwise system env is used -->
+        <ExecParams>
+          <Param name="--resultsPath">%BS|RESULTSPATH%</Param>
+          <Param name="--cwd">%BS|CWD%</Param>
+          <Param name="--hostname">%BS|Test_System%</Param>
+        </ExecParams>
+        <PostWait>5</PostWait>
+        <TimeOut>600</TimeOut>
+        <RestartComputer wait="true">false</RestartComputer>
+      </Step>
+      
+      <RefreshResource>
+        <ResourceID>Server1</ResourceID>
+        <RestartComputer wait="true">true</RestartComputer>
+      </RefreshResource>
+      
+      <Step>
+        <Description>Invalid Compiler Test Step</Description>
+        <ResourceID>Server1</ResourceID>
+        <Directory>Fancy_Lads\Compiler_Tests</Directory>
+        <Interpreter></Interpreter>
+        <Executable>Compiler_Invalid.exe</Executable>
+        <!--All environment variables should begin with BS for Bespoke otherwise system env is used -->
+        <ExecParams>
+          <Param name="--resultsPath">%BS|RESULTSPATH%</Param>
+          <Param name="--cwd">%BS|CWD%</Param>
+          <Param name="--hostname">%BS|Test_System%</Param>
+        </ExecParams>
+        <PostWait>5</PostWait>
+        <TimeOut>600</TimeOut>
+        <RestartComputer wait="true">false</RestartComputer>
+      </Step>
+    </TestSteps>
+  </TestCase>
+  <!--End Test Case-->
+  
+</TestPlan>

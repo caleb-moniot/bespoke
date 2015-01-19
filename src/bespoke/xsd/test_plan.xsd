@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <!--SIMPLE TYPES-->
+  <!--The path can be followed by a backslash.-->
+  <xs:simpleType name="validPath">
+    <xs:restriction base="xs:normalizedString">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="260"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="nonEmptyString">
+    <xs:restriction base="xs:normalizedString">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="resourceTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="system" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--END SIMPLE TYPES-->
+  
+  <!--COMPLEX TYPES-->
+  <xs:complexType name="dictionaryType">
+    <xs:simpleContent>
+      <xs:extension base="xs:normalizedString">
+        <xs:attribute name="name" type="xs:normalizedString" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:complexType name="restartComputerType">
+    <xs:simpleContent>
+      <xs:extension base="xs:boolean">
+        <xs:attribute name="wait" type="xs:boolean" use="optional" default="false"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:complexType name="toolsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Tool" type="xs:normalizedString"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="buildsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Build" type="xs:normalizedString"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="paramsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Param" type="dictionaryType"/>
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="prepareVirtualMachineType">
+    <xs:all>
+      <xs:element name="VirtualMachine" type="xs:normalizedString" />
+      <xs:element name="Checkpoint" type="xs:normalizedString" />
+      <xs:element name="Tools" type="toolsType" />
+      <xs:element name="Builds" type="buildsType" />
+      <xs:element name="PostWait" type="xs:positiveInteger" />
+      <xs:element name="TimeOut" type="xs:positiveInteger" />
+      <xs:element name="RestartComputer" type="restartComputerType" />
+    </xs:all>
+    <xs:attribute name="resource_id" type="xs:normalizedString" use="required"/>
+  </xs:complexType>
+  
+  <xs:complexType name="resourceInitType">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="PrepareVirtualMachine" type="prepareVirtualMachineType"/>
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="stepType">
+    <xs:all>
+      <xs:element name="Description" type="nonEmptyString" />
+      <xs:element name="ResourceID" type="nonEmptyString" />
+      <xs:element name="Directory" type="validPath" />
+      <xs:element name="Interpreter" type="xs:normalizedString" />
+      <xs:element name="Executable" type="nonEmptyString" />
+      <xs:element name="ExecParams" type="paramsType" />
+      <xs:element name="PostWait" type="xs:positiveInteger" />
+      <xs:element name="TimeOut" type="xs:positiveInteger" />
+      <xs:element name="RestartComputer" type="restartComputerType" />
+    </xs:all>
+  </xs:complexType>
+  
+  <xs:complexType name="refreshResourceType">
+    <xs:all>
+      <xs:element name="ResourceID" type="xs:normalizedString" />
+      <xs:element name="RestartComputer" type="restartComputerType" />
+    </xs:all>
+  </xs:complexType>
+  
+  <xs:complexType name="testStepsType">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="Step" type="stepType"/>
+      <xs:element name="RefreshResource" type="refreshResourceType"/>
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="testCaseType">
+    <xs:all>
+      <xs:element name="ResourceInit" type="resourceInitType" />
+      <xs:element name="TestSteps" type="testStepsType" />
+    </xs:all>
+    <xs:attribute name="name" type="xs:normalizedString" use="required"/>
+  </xs:complexType>
+  
+  <!--This defines the allowed content in the "VMConfig" element.-->
+  <xs:complexType name="testPlanType">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="TestCase" type="testCaseType" />
+    </xs:choice>
+    <xs:attribute name="name" type="xs:normalizedString" use="required" />
+    <xs:attribute name="version" type="xs:positiveInteger" use="required" />
+  </xs:complexType>
+  <!--END COMPLEX TYPES-->
+  
+  <!--ELEMENTS-->
+  <!--This is the main element in the XML config file.-->
+  <xs:element name="TestPlan" type="testPlanType" />
+  <!--END ELEMENTS-->
+</xs:schema>
+

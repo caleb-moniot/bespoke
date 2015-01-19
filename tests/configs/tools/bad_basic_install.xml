@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ToolConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\xsd\tools_config.xsd" version="3">
+  <Tool>
+    <Name>BadBasicInstall</Name>
+    <Version>13.1</Version>
+    <TargetOS arch_type="x64">Windows</TargetOS>
+    <Source type="no_copy" copy_once="true" />
+    <InstallMethod type="basic_install">
+      <Property name="source_path"></Property>
+      <Property name="target_path"></Property>
+    </InstallMethod>
+  </Tool>
+  
+</ToolConfig>

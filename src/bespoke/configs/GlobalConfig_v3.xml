@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This config contains settings for Bespoke used for all test runs or contains default settings -->
+<GlobalConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xsd\global_config.xsd" version="3">
+  
+  <!-- Required -->
+  <!-- Warning! If not set correctly Bespoke will fail to run. -->
+  <BespokeServerHostname>Grim</BespokeServerHostname>
+  
+  <!-- These paths are all absolute on the Bespoke server -->
+  <ConfigPath>/home/meowzilla/bespoke/configs</ConfigPath>
+  <TestRunPath>/home/meowzilla/meowcorp/testruns</TestRunPath>
+  <TestPlanPath>/home/meowzilla/meowcorp/meowmeowcom/testplans</TestPlanPath>
+  <TestScriptPath>/home/meowzilla/meowcorp/meowmeowcom/testscripts</TestScriptPath>
+  <ToolPath>/home/meowzilla/meowcorp/gitrepo/tools</ToolPath>
+  <ResultsPath>/home/meowzilla/meowcorp/girrepo/results</ResultsPath>
+  
+  <!-- UNC Path for TestManager controller resources (Needed for results) -->
+  <ResultsURL>\\ryan-pc.bespoke.com\bespoke</ResultsURL>
+
+  <!-- Global Log -->
+  <!-- This log will eventually be copied into the results directory -->
+  <GlobalLog>bespoke_trace.log</GlobalLog>
+  
+  <!-- These paths are all relative to the ConfigPath above -->
+  <!-- Default Resource Configs -->
+  <ResourceConfigs>
+    <ResourceConfig>ResourceConfig.xml</ResourceConfig>
+  </ResourceConfigs>
+  <!-- END REQUIRED -->
+  
+</GlobalConfig>

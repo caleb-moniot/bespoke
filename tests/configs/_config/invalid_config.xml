@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="happy_path.xsd" 
+        version="3">
+  
+  <!-- Comment -->
+  <Path>c:\some\path</Path>
+  
+  <NotAllowed>I should not be here, but I am</NotAllowed>
+  
+  <!-- Comment -->
+  <Stuff>Super important information</Stuff>
+  <Numbers>123124</Numbers>
+  
+  <ComplexStuff>
+      <Path>c:\some\different\path</Path>
+      <Stuff>Other not as important information</Stuff>
+      <Numbers bad="this attribute is bad">8479387378498</Numbers>
+  </ComplexStuff>
+  
+</Config>

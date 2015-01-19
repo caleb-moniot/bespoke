@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This config contains the tools needed to run tests.
+   The tools are only copied if specified by the test suite or test case.
+   A tool is considered to be a 3rd party program meant to perform test functions
+   or a program that assists in test run process.-->
+<ToolConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\xsd\tools_config.xsd" version="3">
+  <!-- Monocle CIFS -->
+  <Tool>
+    <Name>Monocle</Name>
+    <Version>1.0</Version>
+    <TargetOS arch_type="x64">Windows</TargetOS>
+    <!-- Support NFS, CIFS, FTP -->
+    <Source type="basic_copy" copy_once="true">
+      <Property name="source_path">c:\Programs\FileBot\filebot_v1.3.1</Property>
+      <Property name="target_path">filebot</Property>
+    </Source>
+    <InstallMethod type="basic_install">
+      <Property name="source_path">filebot</Property>
+      <Property name="target_path">c:\filebot</Property>
+    </InstallMethod>
+  </Tool>
+  
+  <!-- Tailor NFS/Basic -->
+  <Tool>
+    <Name>Tailor</Name>
+    <Version>1.0</Version>
+    <TargetOS arch_type="x64">Linux</TargetOS>
+    <Source type="basic_copy" copy_once="true">
+      <Property name="source_path">/mnt/builds/tailor/tailor_1.0.deb</Property>
+      <Property name="target_path">tailor</Property>
+    </Source>
+    <InstallMethod type="basic_install">
+      <Property name="source_path">filebot</Property>
+      <Property name="target_path">/opt/tailor</Property>
+    </InstallMethod>
+  </Tool>
+  
+  <!-- Top Hat FTP -->
+  <Tool>
+    <Name>Top Hat</Name>
+    <Version>1.0</Version>
+    <TargetOS arch_type="x64">Windows</TargetOS>
+    <!-- Support NFS, CIFS, FTP -->
+    <Source type="ftp_copy" copy_once="true">
+      <Property name="source_server">ftp.fancylads.local</Property>
+      <Property name="source_server_port">21</Property>
+      <Property name="source_server_user">FancyCat</Property>
+      <Property name="source_server_password">meowmeowmeow</Property>
+      <Property name="source_path">Programs\tophat\tophat_1.0</Property>
+      <Property name="target_path">tophat</Property>
+    </Source>
+    <InstallMethod type="basic_install">
+      <Property name="source_path">filebot</Property>
+      <Property name="target_path">c:\tophat</Property>
+    </InstallMethod>
+  </Tool>
+  
+  <!-- MSI Install -->
+  <Tool>
+    <Name>Cobbler</Name>
+    <Version>1.0</Version>
+    <TargetOS arch_type="x86">Windows</TargetOS>
+    <Source type="http_copy" copy_once="true">
+      <Property name="source_server">http.fancylads.local</Property>
+      <Property name="source_server_port">21</Property>
+      <Property name="source_server_user">FancyCat</Property>
+      <Property name="source_server_password">meowmeowmeow</Property>
+      <Property name="source_path">Programs\cobbler\cobbler_1.0</Property>
+      <Property name="target_path">cobbler</Property>
+    </Source>
+    <InstallMethod type="msi_install">
+      <Property name="source_file">cobbler\Cobbler.msi</Property>
+      <Property name="INSTALLLOCATION">C:\cobbler</Property>
+    </InstallMethod>
+  </Tool>
+  
+</ToolConfig>

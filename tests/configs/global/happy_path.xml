@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This config contains settings for Bespoke used for all test runs or contains default settings -->
+<GlobalConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xsi:noNamespaceSchemaLocation="xsd\global_config.xsd" 
+              version="3">
+  
+  <!-- Required -->
+  <!-- Warning! If not set correctly Bespoke will fail to run. -->
+  <BespokeServerHostname>Grim</BespokeServerHostname>
+
+  <!-- Warning! If not set correctly Bespoke will fail to run. -->
+  <ConfigPath>configs</ConfigPath>
+  <TestRunPath>testruns</TestRunPath>
+  <TestPlanPath>testplans</TestPlanPath>
+  <TestScriptPath>testscripts</TestScriptPath>
+  <ToolPath>tools</ToolPath>
+  <ResultsPath>results</ResultsPath>
+  
+  <!-- UNC Path for TestManager controller resources (Needed for results) -->
+  <ResultsURL>\\ryan-pc.bespoke.com\bespoke</ResultsURL>
+
+  <!-- Global Log -->
+  <!-- This log will eventually be copied into the results directory -->
+  <GlobalLog>bespoke_trace.log</GlobalLog>
+  
+  <!-- Default Resource Configs -->
+  <ResourceConfigs>
+    <ResourceConfig>ResourceConfig.xml</ResourceConfig>
+  </ResourceConfigs>
+  <!-- END REQUIRED -->
+  
+</GlobalConfig>

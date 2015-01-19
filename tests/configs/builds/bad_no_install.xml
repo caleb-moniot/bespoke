@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BuildConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\xsd\tools_config.xsd" version="3">
+  <!-- Monocle CIFS -->
+  <Build>
+    <Name>BadNoInstall</Name>
+    <Version>13.1</Version>
+    <TargetOS arch_type="x64">Windows</TargetOS>
+    <Source type="basic_copy" copy_once="true">
+      <Property name="source_path">c:\Programs\monocle\monocle_v1.0.1</Property>
+      <Property name="target_path">monocle</Property>
+    </Source>
+    <InstallMethod type="no_install">
+      <Property name="junk">tailor</Property>
+      <Property name="more_junk">asdf</Property>
+    </InstallMethod>
+  </Build>
+  
+</BuildConfig>

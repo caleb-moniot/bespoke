@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This config contains the Resources to be used for Bespoke tests. -->
+<ResourceConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\xsd\resource_config.xsd" version="1">
+  <VirtualMachineTemplateHost provider="Vagrant" host="localhost">
+    <Template>
+      <Alias>BVT-2k3-R2-32</Alias>
+      <Name>BVT-2k3-R2-32</Name>
+      <BespokeRoot>C:\Bespoke\TestManager</BespokeRoot>
+      <UserName>FancyLads\BobTester</UserName>
+      <Password>password</Password>
+      <OSType arch_type="x86">Windows</OSType>
+      <OSLabel>Windows 2003 R2</OSLabel>
+      <Role>Server</Role>
+      <ExtendedConfiguration>
+        <Config name="VagrantFile"></Config>
+        <Config name="VagrantBoxURL"></Config>
+        <Config name="VagrantBoxRoot"></Config>
+        <Config name="VagrantHypervisor"></Config>
+      </ExtendedConfiguration>
+      <Tools />
+    </Template>
+  </VirtualMachineTemplateHost>
+  
+  <VirtualMachineHost hypervisor="VirtualBox" host="cornholio.fancylads.local">
+    <VM>
+      <Alias>BVT-2k8-R2-64</Alias>
+      <Name>BVT-2k8-R2-64</Name>
+      <NetworkAddress>bvt-2k8-r2-64.fancylads.local</NetworkAddress>
+      <BespokeRoot>C:\Bespoke\TestManager</BespokeRoot>
+      <UserName>FancyLads\BobTester</UserName>
+      <Password>password</Password>
+      <OSType arch_type="x64">Windows</OSType>
+      <OSLabel>Windows 2008 R2</OSLabel>
+      <Role>Server</Role>
+      <CheckPoints>
+        <CheckPoint name="ReadyToAutoTest"/>
+      </CheckPoints>
+      <Tools />
+    </VM>
+    
+    <VM>
+      <Alias>BVT-centos5.8</Alias>
+      <Name>BVT-centos5.8</Name>
+      <NetworkAddress>192.186.10.101</NetworkAddress>
+      <BespokeRoot>/opt/Bespoke/TestManager</BespokeRoot>
+      <UserName>FancyLads\BobTester</UserName>
+      <Password>password</Password>
+      <OSType arch_type="x64">Linux</OSType>
+      <OSLabel>CentOS 5.8</OSLabel>
+      <Role>Server</Role>
+      <CheckPoints>
+        <CheckPoint name="ReadyToAutoTest"/>
+      </CheckPoints>
+      <Tools />
+    </VM>
+  </VirtualMachineHost>
+</ResourceConfig>
