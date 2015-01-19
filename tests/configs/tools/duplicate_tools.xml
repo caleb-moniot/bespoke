@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ToolConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\xsd\tools_config.xsd" version="3">
+  <!-- Monocle CIFS -->
+  <Tool>
+    <Name>Monocle</Name>
+    <Version>1.0.1</Version>
+    <TargetOS arch_type="x64">Windows</TargetOS>
+    <Source type="basic_copy" copy_once="true">
+      <Property name="source_path">c:\Programs\monocle\monocle_v1.0.1</Property>
+      <Property name="target_path">monocle</Property>
+    </Source>
+    <InstallMethod type="basic_install">
+      <Property name="source_path">monocle</Property>
+      <Property name="target_path">c:\monocle</Property>
+    </InstallMethod>
+  </Tool>
+  
+  <!-- Duplicate -->
+  <Tool>
+    <Name>Monocle</Name>
+    <Version>1.0</Version>
+    <TargetOS arch_type="x64">Linux</TargetOS>
+    <Source type="basic_copy" copy_once="true">
+      <Property name="source_path">/mnt/builds/tailor/tailor_1.0</Property>
+      <Property name="target_path">tailor</Property>
+    </Source>
+    <InstallMethod type="basic_install">
+      <Property name="source_path">tailor</Property>
+      <Property name="target_path">/opt/tailor</Property>
+    </InstallMethod>
+  </Tool>
+  
+</ToolConfig>

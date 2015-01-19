@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BuildConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\xsd\build_config.xsd" version="1">
+  <!--The builds associated with this test plan config.-->
+  <!-- Bespoke 1.0 Installer -->
+  <Build>
+    <Name>Monocle</Name>
+    <Version>1.0</Version>
+    <TargetOS arch_type="x64">Windows</TargetOS>
+    <Source type="cifs_copy" copy_once="true">
+      <Property name="source_server">monocle.fancylads.local</Property>
+      <Property name="source_server_user">FancyCat</Property>
+      <Property name="source_server_password">meowmeowmeow</Property>
+      <Property name="source_path">Programs\Monocle\monocle_1.0</Property>
+      <Property name="target_path">monocle</Property>
+    </Source>
+    <InstallMethod type="msi">
+      <Property name="source_file">monocle.msi</Property>
+      <Property name="INSTALLLOCATION">C:\monocle</Property>
+    </InstallMethod>
+  </Build>
+</BuildConfig>

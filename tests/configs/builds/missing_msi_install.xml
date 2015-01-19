@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BuildConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\xsd\tools_config.xsd" version="3">
+  <Build>
+    <Name>MissingMSI</Name>
+    <Version>13.1</Version>
+    <TargetOS arch_type="x64">Windows</TargetOS>
+    <Source type="no_copy" copy_once="true" />
+    <InstallMethod type="msi_install">
+      <Property name="junk">stuff</Property>
+    </InstallMethod>
+  </Build>
+  
+</BuildConfig>

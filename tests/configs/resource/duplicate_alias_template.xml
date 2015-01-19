@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This config contains the Resources to be used for Bespoke tests. -->
+<ResourceConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\..\src\bespoke\xsd\resource_config.xsd" version="1">
+  <VirtualMachineTemplateHost provider="Vagrant" host="localhost">
+    <Template>
+      <Alias>BVT-2k3-R2-32</Alias>
+      <Name>BVT-2k3-R2-32</Name>
+      <BespokeRoot>C:\Bespoke\TestManager</BespokeRoot>
+      <UserName>FancyLads\BobTester</UserName>
+      <Password>retest</Password>
+      <OSType arch_type="x86">Windows</OSType>
+      <OSLabel>Windows 2003 R2</OSLabel>
+      <Role>Server</Role>
+      <ExtendedConfiguration>
+        <Config name="VagrantFile"></Config>
+        <Config name="VagrantBoxURL"></Config>
+        <Config name="VagrantBoxRoot"></Config>
+        <Config name="VagrantHypervisor"></Config>
+      </ExtendedConfiguration>
+      <Tools />
+    </Template>
+    
+    <Template>
+      <Alias>BVT-2k3-R2-32</Alias>
+      <Name>BVT-2k3-R2-32</Name>
+      <BespokeRoot>C:\Bespoke\TestManager</BespokeRoot>
+      <UserName>FancyLads\BobTester</UserName>
+      <Password>retest</Password>
+      <OSType arch_type="x86">Windows</OSType>
+      <OSLabel>Windows 2003 R2</OSLabel>
+      <Role>Server</Role>
+      <ExtendedConfiguration>
+        <Config name="VagrantFile"></Config>
+        <Config name="VagrantBoxURL"></Config>
+        <Config name="VagrantBoxRoot"></Config>
+        <Config name="VagrantHypervisor"></Config>
+      </ExtendedConfiguration>
+      <Tools />
+    </Template>
+  </VirtualMachineTemplateHost>
+</ResourceConfig>

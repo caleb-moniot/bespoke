@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This config contains the Resources to be used for Bespoke tests. -->
+<ResourceConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\..\src\bespoke\xsd\resource_config.xsd" version="1">
+  <VirtualMachineHost hypervisor="VirtualBox" host="cornholio.fancylads.local">
+    <VM>
+      <Alias>BVT-2k8-R2-64</Alias>
+      <Name>BVT-2k8-R2-64</Name>
+      <NetworkAddress>bvt-2k8-r2-64.fancylads.local</NetworkAddress>
+      <BespokeRoot>C:\Bespoke\TestManager</BespokeRoot>
+      <UserName>FancyLads\BobTester</UserName>
+      <Password>password</Password>
+      <OSType arch_type="x64">Windows</OSType>
+      <OSLabel>Windows 2008 R2</OSLabel>
+      <Role>Server</Role>
+      <CheckPoints />
+      <Tools />
+    </VM>
+  </VirtualMachineHost>
+</ResourceConfig>

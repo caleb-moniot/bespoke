@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <!--SIMPLE TYPES-->
+  <!--The path can be followed by a backslash.-->
+  <xs:simpleType name="validPath">
+    <xs:restriction base="xs:normalizedString">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="260"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--END SIMPLE TYPES-->
+  
+  <!--COMPLEX TYPES-->
+  <xs:complexType name="resourceConfigsType">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="ResourceConfig" type="validPath" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <!--This defines the allowed content in the "GlobalConfig" element.-->
+  <xs:complexType name="globalConfigType">
+    <xs:all>
+      <xs:element name="BespokeServerHostname" type="xs:normalizedString"/>
+      <xs:element name="ConfigPath" type="validPath"/>
+      <xs:element name="TestRunPath" type="validPath"/>
+      <xs:element name="TestPlanPath" type="validPath"/>
+      <xs:element name="TestScriptPath" type="validPath"/>
+      <xs:element name="ToolPath" type="validPath"/>
+      <xs:element name="ResultsPath" type="validPath"/>
+      <xs:element name="ResultsURL" type="xs:normalizedString"/>
+      <xs:element name="GlobalLog" type="validPath"/>
+      <xs:element name="ResourceConfigs" type="resourceConfigsType"/>
+    </xs:all>
+    <xs:attribute name="version" type="xs:positiveInteger" use="required" />
+  </xs:complexType>
+  <!--END COMPLEX TYPES-->
+  
+  <!--ELEMENTS-->
+  <!--This is the main element in the XML config file.-->
+  <xs:element name="GlobalConfig" type="globalConfigType"/>
+  <!--END ELEMENTS-->
+</xs:schema>
+

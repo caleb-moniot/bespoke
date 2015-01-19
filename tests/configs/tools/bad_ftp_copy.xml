@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ToolConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\xsd\tools_config.xsd" version="3">
+  <Tool>
+    <Name>BadFTPCopy</Name>
+    <Version>3.1</Version>
+    <TargetOS arch_type="x64">Windows</TargetOS>
+    <Source type="ftp_copy" copy_once="true">
+      <Property name="source_server">asdf----asdf--283~~~3</Property>
+      <Property name="source_server_port">21</Property>
+      <Property name="source_server_user">FancyCat</Property>
+      <Property name="source_server_password">meowmeowmeow</Property>
+      <Property name="source_path">Programs\tophat\tophat_1.0</Property>
+      <Property name="target_path">tophat</Property>
+    </Source>
+    <InstallMethod type="no_install" />
+  </Tool>
+  
+</ToolConfig>

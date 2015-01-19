@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <!--SIMPLE TYPES-->
+  <!--The path can be followed by a backslash.-->
+  <xs:simpleType name="validPath">
+    <xs:restriction base="xs:normalizedString">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="260"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="securityTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TLS" />
+      <xs:enumeration value="SSL" />
+      <xs:enumeration value="basic" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--END SIMPLE TYPES-->
+  
+  <!--COMPLEX TYPES-->
+  <xs:complexType name="smtpServerType">
+    <xs:simpleContent>
+      <xs:extension base="xs:normalizedString">
+        <xs:attribute name="port" type="xs:positiveInteger" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="smtpCredentialsType">
+    <xs:sequence>
+      <xs:element name="Username" type="xs:normalizedString" />
+      <xs:element name="Password" type="xs:normalizedString" />
+    </xs:sequence>
+    <xs:attribute name="security_type" type="securityTypeEnum" use="required" />
+    <xs:attribute name="self_signed" type="xs:boolean" use="required" />
+  </xs:complexType>
+  
+  <xs:complexType name="emailRecipientsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="EmailRecipient" type="xs:normalizedString" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="toolConfigsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="ToolConfig" type="validPath" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="buildConfigsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="BuildConfig" type="validPath" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="testPlansType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="TestPlan" type="validPath" />
+    </xs:choice>
+  </xs:complexType>
+  
+  <!--This defines the allowed content in the "TestPlanConfig" element.-->
+  <xs:complexType name="testRunConfigType">
+    <xs:all>
+      <xs:element name="Description" type="xs:normalizedString" />
+      <xs:element name="EmailSender" type="xs:normalizedString"/>
+      <xs:element name="EmailSubject" type="xs:normalizedString" />
+      <xs:element name="EmailRecipients" type="emailRecipientsType" />
+      <xs:element name="SMTPServer" type="smtpServerType"/>
+      <xs:element name="SMTPCredentials" type="smtpCredentialsType"/>
+      <xs:element name="ToolConfigs" type="toolConfigsType" />
+      <xs:element name="BuildConfigs" type="buildConfigsType" />
+      <xs:element name="TestPlans" type="testPlansType" />
+    </xs:all>
+    <xs:attribute name="version" type="xs:positiveInteger" use="required" />
+  </xs:complexType>
+  <!--END COMPLEX TYPES-->
+  
+  <!--ELEMENTS-->
+  <!--This is the main element in the XML config file.-->
+  <xs:element name="TestRunConfig" type="testRunConfigType" />
+  <!--END ELEMENTS-->
+</xs:schema>
+

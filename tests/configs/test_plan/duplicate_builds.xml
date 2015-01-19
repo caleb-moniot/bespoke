@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestPlan name="Duplicate_Build_Test_Plan" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\..\src\bespoke\xsd\test_plan.xsd" version="3">
+  
+  <!--Start Test Case-->
+  <TestCase name="Duplicate_Build_Test_Case">
+    <ResourceInit>
+      <PrepareVirtualMachine resource_id="Test_System_1">
+        <VirtualMachine>Windows_VM</VirtualMachine>
+        <Checkpoint>ReadyToAutoTest</Checkpoint>
+        <Tools/>
+        <Builds>
+          <Build>Happy_Build</Build>
+          <Build>Happy_Build</Build>
+        </Builds>
+        <PostWait>5</PostWait>
+        <TimeOut>600</TimeOut>
+        <RestartComputer wait="true">true</RestartComputer>
+      </PrepareVirtualMachine>
+    </ResourceInit>
+    <TestSteps>
+      <Step>
+        <Description>Test Step 1</Description>
+        <ResourceID>Test_System_1</ResourceID>
+        <Directory>Fancy_Lads\Tests</Directory>
+        <Interpreter></Interpreter>
+        <Executable>happy_tester.exe</Executable>
+        <ExecParams>
+          <Param name="--resultsPath">C:\temp</Param>
+          <Param name="--cwd">C:\tests</Param>
+        </ExecParams>
+        <PostWait>5</PostWait>
+        <TimeOut>600</TimeOut>
+        <RestartComputer wait="false">false</RestartComputer>
+      </Step>
+    </TestSteps>  
+  </TestCase>
+  <!--End Test Case-->
+  
+</TestPlan>

@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <!--SIMPLE TYPES-->
+  <!--The path can be followed by a backslash.-->
+  <xs:simpleType name="validPath">
+    <xs:restriction base="xs:normalizedString">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="260"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="providerTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Vagrant" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="hypervisorTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="VirtualBox" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="archTypesEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="x86" />
+      <xs:enumeration value="x64" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="osTypesEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Windows" />
+      <xs:enumeration value="Linux" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--END SIMPLE TYPES-->
+  
+  <!--COMPLEX TYPES-->
+  <!--Used to store extended configuration properties-->
+  <xs:complexType name="dictionaryType">
+    <xs:simpleContent>
+      <xs:extension base="xs:normalizedString">
+        <xs:attribute name="name" type="xs:normalizedString" use="required" />
+      </xs:extension>
+    </xs:simpleContent> 
+  </xs:complexType>
+  
+  <!--Used for holding information on extended configuration information for template providers-->
+  <xs:complexType name="complexExtendedConfigurationDictionaryType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Config" type="dictionaryType"/>
+    </xs:choice>
+  </xs:complexType>
+  
+  <xs:complexType name="checkpointType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Tool" type="xs:normalizedString" />
+    </xs:choice>
+    <xs:attribute name="name" type="xs:normalizedString" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="checkpointsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="CheckPoint" type="checkpointType" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="toolsType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Tool" type="xs:normalizedString" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="complexTargetOSType">
+    <xs:simpleContent>
+      <xs:extension base="osTypesEnum">
+        <xs:attribute name="arch_type" type="archTypesEnum" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:complexType name="templateType">
+    <xs:all>
+      <xs:element name="Alias" type="xs:normalizedString" />
+      <xs:element name="Name" type="xs:normalizedString" />
+      <xs:element name="BespokeRoot" type="validPath" />
+      <xs:element name="UserName" type="xs:normalizedString" />
+      <xs:element name="Password" type="xs:normalizedString" />
+      <xs:element name="OSType" type="complexTargetOSType" />
+      <xs:element name="OSLabel" type="xs:normalizedString" />
+      <xs:element name="Role" type="xs:normalizedString" />
+      <xs:element name="ExtendedConfiguration" type="complexExtendedConfigurationDictionaryType" />
+      <xs:element name="Tools" type="toolsType" />
+    </xs:all>
+  </xs:complexType>
+  
+  <xs:complexType name="vmType">
+    <xs:all>
+      <xs:element name="Alias" type="xs:normalizedString" />
+      <xs:element name="Name" type="xs:normalizedString" />
+      <xs:element name="NetworkAddress" type="xs:normalizedString" />
+      <xs:element name="BespokeRoot" type="validPath" />
+      <xs:element name="UserName" type="xs:normalizedString" />
+      <xs:element name="Password" type="xs:normalizedString" />
+      <xs:element name="OSType" type="complexTargetOSType" />
+      <xs:element name="OSLabel" type="xs:normalizedString" />
+      <xs:element name="Role" type="xs:normalizedString" />
+      <xs:element name="CheckPoints" type="checkpointsType" />
+      <xs:element name="Tools" type="toolsType" />
+    </xs:all>
+  </xs:complexType>
+
+  <!--Used to define what VM templates are available for tests-->
+  <xs:complexType name="virtualMachineTemplateHostType">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="Template" type="templateType" />
+    </xs:choice>
+    <xs:attribute name="provider" type="providerTypeEnum" use="required" />
+    <xs:attribute name="host" type="xs:normalizedString" use="required" />
+  </xs:complexType>
+  
+  <!--Used to define what which VMs are located on what VM hosts-->
+  <xs:complexType name="virtualMachineHostType">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="VM" type="vmType" />
+    </xs:choice>
+    <xs:attribute name="hypervisor" type="hypervisorTypeEnum" use="required" />
+    <xs:attribute name="host" type="xs:normalizedString" use="required" />
+  </xs:complexType>
+  
+  <!--This defines the allowed content in the "ResourceConfig" element.-->
+  <xs:complexType name="resourceConfigType">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="VirtualMachineTemplateHost" type="virtualMachineTemplateHostType"/>
+	  <xs:element name="VirtualMachineHost" type="virtualMachineHostType"/>
+    </xs:choice>
+    <xs:attribute name="version" type="xs:positiveInteger" use="required" />
+  </xs:complexType>
+  <!--END COMPLEX TYPES-->
+  
+  <!--ELEMENTS-->
+  <!--This is the main element in the XML config file.-->
+  <xs:element name="ResourceConfig" type="resourceConfigType" />
+  <!--END ELEMENTS-->
+</xs:schema>
