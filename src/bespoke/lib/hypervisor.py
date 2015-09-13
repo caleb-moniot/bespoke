@@ -290,7 +290,8 @@ class _VBoxHostManager(object):
                                                   {'url':'http://{}:{}'.format(host, VBOX_WEB_PORT),
                                                    'user':user,
                                                    'password':password})
-        except Exception:
+        except Exception as e:
+            e.msg
             raise VMError('Cannot connect to VirtualBox host!', host=host)
         
         _VBoxHostManager._vbox_managers[host] = self._vboxmgr
@@ -482,6 +483,8 @@ class VBoxMachine(_VirtualMachine):
             progress = self._machine.launchVMProcess(session, 'gui', '')
             progress.waitForCompletion(VM_OP_TIMEOUT)
             self._wait_for_state(session, 2)        #Wait for the "Locked" state. (2)
+
+            # TODO: We should verify machine state before continuing.
         except Exception as e:
             raise VMError('Failed to start the virtual machine! Reason: {}'.format(str(e)),
                           self._host,

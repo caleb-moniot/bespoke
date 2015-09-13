@@ -13,6 +13,7 @@ __version__ = 0.2
 #  Imports
 # ===================================================================================================
 import abc
+import logging
 from re import compile
 from lxml import etree as et
 from os.path import isfile
@@ -469,7 +470,8 @@ class _Config(object):
         """
         
         return True if cls._RGX_PORT.match(port) else False
-    
+
+
 class GlobalConfig(_Config):
     """This class will validate, parse and store information contained in the GlobalConfig file for
     Bespoke.
@@ -486,7 +488,10 @@ class GlobalConfig(_Config):
     
     def __init__(self, xml_config_file, xsd_path):
         super(GlobalConfig, self).__init__(xml_config_file, xsd_path)
-        
+
+        # Instantiate logging object.
+        self.logger = logging.getLogger('bespoke.config.GlobalConfig')
+
         self.parse_config()
         self.load_content()
         
@@ -598,7 +603,8 @@ class GlobalConfig(_Config):
         """
         
         return super(GlobalConfig, self).__iter__()
-        
+
+
 class ToolConfig(_Config):
     """This class will validate, parse and store information contained in the ToolConfig.
     
@@ -616,6 +622,9 @@ class ToolConfig(_Config):
     
     def __init__(self, xml_config_path, xsd_path, instrument_type):
         super(ToolConfig, self).__init__(xml_config_path, xsd_path)
+
+        # Instantiate logging object.
+        self.logger = logging.getLogger('bespoke.config.ToolConfig')
 
         # Since builds and tools are the same we need to differentiate them by name.
         # This will allow for accurate exception messages.
@@ -1053,7 +1062,8 @@ class ToolConfig(_Config):
         """
         
         return super(ToolConfig, self).__iter__()
-        
+
+
 class BuildConfig(ToolConfig):
     """This class will validate, parse and store information contained in the BuildConfig.
     
@@ -1071,7 +1081,11 @@ class BuildConfig(ToolConfig):
     
     def __init__(self, xml_config_path, xsd_path, instrument_type):
         super(BuildConfig, self).__init__(xml_config_path, xsd_path, instrument_type)
-        
+
+        # Instantiate logging object.
+        self.logger = logging.getLogger('bespoke.config.BuildConfig')
+
+
 class ResourceConfig(_Config):
     """This class will validate, parse and store information contained in the ResourceConfig file
     for Bespoke.
@@ -1088,6 +1102,9 @@ class ResourceConfig(_Config):
     
     def __init__(self, xml_config_path, xsd_path):
         super(ResourceConfig, self).__init__(xml_config_path, xsd_path)
+
+        # Instantiate logging object.
+        self.logger = logging.getLogger('bespoke.config.ResourceConfig')
 
         self.parse_config()
         self.load_content()
@@ -1510,6 +1527,7 @@ class ResourceConfig(_Config):
         
         return super(ResourceConfig, self).__iter__()
 
+
 class TestPlanConfig(_Config):
     """This class will validate, parse and store information contained in test plan files for
     Bespoke. This is the main constructor to use for building a "TestRun".
@@ -1538,7 +1556,10 @@ class TestPlanConfig(_Config):
                  available_resources):
         
         super(TestPlanConfig, self).__init__(xml_config_path, xsd_path)
-        
+
+        # Instantiate logging object.
+        self.logger = logging.getLogger('bespoke.config.TestPlanConfig')
+
         # Override internal content dictionary.
         self._content = TestPlan()
         
@@ -1891,7 +1912,8 @@ class TestPlanConfig(_Config):
         """
         
         return self._content
-    
+
+
 class TestRunConfig(_Config):
     """This class will validate, parse and store information contained in the TestRunConfig.
     
@@ -1907,7 +1929,10 @@ class TestRunConfig(_Config):
     
     def __init__(self, xml_config_path, xsd_path):
         super(TestRunConfig, self).__init__(xml_config_path, xsd_path)
-        
+
+        # Instantiate logging object.
+        self.logger = logging.getLogger('bespoke.config.TestRunConfig')
+
         self.parse_config()
         self.load_content()
         
@@ -2050,7 +2075,8 @@ class TestRunConfig(_Config):
         """
         
         return super(TestRunConfig, self).__iter__()
-    
+
+
 # ===================================================================================================
 #  Exceptions
 # ===================================================================================================

@@ -8,6 +8,9 @@ __pycache__/
 # PyCharm project files
 .idea/
 
+# Atlassian Specific
+atlassian-ide-plugin.xml
+
 # Distribution / packaging
 .Python
 env/

@@ -18,8 +18,8 @@ from time import sleep
 #===================================================================================================
 # Tests
 #===================================================================================================
-@skip('Skip non-portable tests! If you want to use these '
-      'tests you must alter them for your environment!')
+# @skip('Skip non-portable tests! If you want to use these '
+#       'tests you must alter them for your environment!')
 class VBoxMachineTests_Non_Portable(TestCase):
     """Happy path tests for the VBoxMachine class in the hypervisor module."""
     
