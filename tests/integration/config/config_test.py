@@ -18,6 +18,8 @@ from config import _Config, GlobalConfig, ToolConfig, BuildConfig, TestRunConfig
 # Globals
 #===================================================================================================
 SKIP_EVERYTHING = False
+SHARED_CONFIGS = r'../../shared_configs/'
+BESPOKE_XSD = r'../../../src/bespoke/xsd/'
 
 #===================================================================================================
 # Classes
@@ -68,8 +70,8 @@ class _ConfigTests(TestCase):
     def test1_happy_path(self):
         """This test will verify that a valid config will validate against a valid xsd."""
         
-        test_obj = _ConfigAccessor(r'../configs/_config/happy_path.xml',
-                                   r'../configs/_config/happy_path.xsd')
+        test_obj = _ConfigAccessor(SHARED_CONFIGS + r'_config/happy_path.xml',
+                                   SHARED_CONFIGS + r'_config/happy_path.xsd')
         
         test_obj.parse_config()
         
@@ -80,7 +82,7 @@ class _ConfigTests(TestCase):
         """This test will verify that the _Config class handles a bogus XSD path correctly."""
         
         with self.assertRaises(ConfigError) as cm:
-            _ConfigAccessor(r'../configs/_config/happy_path.xml',
+            _ConfigAccessor(SHARED_CONFIGS + r'_config/happy_path.xml',
                             r'bogus_path_to.xsd')
              
         #Make sure exception contains correct ConfigError information.
@@ -94,7 +96,7 @@ class _ConfigTests(TestCase):
         
         with self.assertRaises(ConfigError) as cm:
             _ConfigAccessor(r'this_file_is_not_here.xml', 
-                            r'../configs/_config/happy_path.xsd')
+                            SHARED_CONFIGS + r'_config/happy_path.xsd')
              
         #Make sure exception contains correct ConfigError information.
         excep = cm.exception
@@ -105,8 +107,8 @@ class _ConfigTests(TestCase):
     def test4_load_xsd_broken_xml(self):
         """This test will verify that the '_load_xsd' method will handle broken XML correctly."""
         
-        test_obj = _ConfigAccessor(r'../configs/_config/happy_path.xml',
-                                   r'../configs/_config/broken.xsd')
+        test_obj = _ConfigAccessor(SHARED_CONFIGS + r'_config/happy_path.xml',
+                                   SHARED_CONFIGS + r'_config/broken.xsd')
         
         with self.assertRaises(ConfigError) as cm:
             test_obj._load_xsd()
@@ -114,13 +116,13 @@ class _ConfigTests(TestCase):
         #Make sure exception contains correct ConfigError information.
         excep = cm.exception
         self.assertEqual(excep.msg, 'error parsing attribute name, line 27, column 1')
-        self.assertEqual(excep._config_file, r'../configs/_config/broken.xsd')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'_config/broken.xsd')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test5_load_xsd_invalid(self):
         """This test will verify that the '_load_xsd' method will handle invalid XMLSchema."""
-        test_obj = _ConfigAccessor(r'../configs/_config/happy_path.xml',
-                                   r'../configs/_config/invalid.xsd')
+        test_obj = _ConfigAccessor(SHARED_CONFIGS + r'_config/happy_path.xml',
+                                   SHARED_CONFIGS + r'_config/invalid.xsd')
         
         with self.assertRaises(ConfigError) as cm:
             test_obj._load_xsd()
@@ -131,7 +133,7 @@ class _ConfigTests(TestCase):
                         ("element decl. 'Path', attribute 'type': The QName "
                          "value 'validFilePath' does not resolve to a(n) type "
                          "definition., line 18"))
-        self.assertEqual(excep._config_file, r'../configs/_config/invalid.xsd')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'_config/invalid.xsd')
     
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test6_validate_invalid_config(self):
@@ -139,8 +141,8 @@ class _ConfigTests(TestCase):
         documents. (The document is proper XML, but violates the schema in some way.)
         """
         
-        test_obj = _ConfigAccessor(r'../configs/_config/invalid_config.xml',
-                                   r'../configs/_config/happy_path.xsd')
+        test_obj = _ConfigAccessor(SHARED_CONFIGS + r'_config/invalid_config.xml',
+                                   SHARED_CONFIGS + r'_config/happy_path.xsd')
         
         #Parse the doc without validation.
         test_obj.parse_config(validate=False)
@@ -154,7 +156,7 @@ class _ConfigTests(TestCase):
                         ("Element 'NotAllowed': This element is not expected. "
                          "Expected is one of ( Stuff, Numbers, ComplexStuff ). "
                          "Line: 9 Column: 0"))
-        self.assertEqual(excep._config_file, r'../configs/_config/invalid_config.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'_config/invalid_config.xml')
         
         #Verify that we can also suppress the exceptions.
         self.assertFalse(test_obj.validate_config(suppress_exceptions=True))
@@ -163,8 +165,8 @@ class _ConfigTests(TestCase):
     def test7_parse_broken_config(self):
         """This test will verify that a valid config will validate against a valid xsd."""
         
-        test_obj = _ConfigAccessor(r'../configs/_config/broken_config.xml',
-                                   r'../configs/_config/happy_path.xsd')
+        test_obj = _ConfigAccessor(SHARED_CONFIGS + r'_config/broken_config.xml',
+                                   SHARED_CONFIGS + r'_config/happy_path.xsd')
         
         with self.assertRaises(ConfigError) as cm:
             test_obj.parse_config()
@@ -173,7 +175,7 @@ class _ConfigTests(TestCase):
         excep = cm.exception
         self.assertEqual(excep.msg, 
                         "StartTag: invalid element name, line 9, column 4")
-        self.assertEqual(excep._config_file, r'../configs/_config/broken_config.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'_config/broken_config.xml')
         
         #Verify that an ConfigError is raised if validation is attempted on a
         #non-parsed config file.
@@ -185,14 +187,14 @@ class _ConfigTests(TestCase):
         self.assertEqual(excep.msg, 
                         ("The config has not been parsed yet! You must run "
                          "'parse_config' before validating!"))
-        self.assertEqual(excep._config_file, r'../configs/_config/broken_config.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'_config/broken_config.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test8_missing_config_version(self):
         """This test will verify that a valid config will validate against a valid xsd."""
         
-        test_obj = _ConfigAccessor(r'../configs/_config/missing_config_version.xml',
-                                   r'../configs/_config/happy_path.xsd')
+        test_obj = _ConfigAccessor(SHARED_CONFIGS + r'_config/missing_config_version.xml',
+                                   SHARED_CONFIGS + r'_config/happy_path.xsd')
         
         with self.assertRaises(ConfigError) as cm:
             test_obj.parse_config()
@@ -202,7 +204,7 @@ class _ConfigTests(TestCase):
         self.assertEqual(excep.msg, 
                         ("Root element of config file is missing the mandatory "
                          "attribute 'version'!"))
-        self.assertEqual(excep._config_file, r'../configs/_config/missing_config_version.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'_config/missing_config_version.xml')
         
 class GlobalConfigTests(TestCase):
     """Tests for the GlobalConfig class in the config module."""
@@ -222,7 +224,7 @@ class GlobalConfigTests(TestCase):
                    'GlobalLog':'bespoke_trace.log',
                    'ResourceConfigs':['ResourceConfig.xml']}
         
-        cfgTest = GlobalConfig(r'../configs/global/happy_path.xml', r'../../src/bespoke/xsd/global_config.xsd')
+        cfgTest = GlobalConfig(SHARED_CONFIGS + r'global/happy_path.xml', BESPOKE_XSD + r'/global_config.xsd')
         
         self.assertEqual(cfgTest._content, dicTest)
         self.assertEqual(cfgTest._config_version, 3)
@@ -234,8 +236,8 @@ class ToolConfigTests(TestCase):
     def test1_happy_path(self):
         """Happy path test to verify that the ToolConfig class works."""
         
-        test_config = ToolConfig(r'../configs/tools/happy_path.xml',
-                                 r'../../src/bespoke/xsd/tool_config.xsd',
+        test_config = ToolConfig(SHARED_CONFIGS + r'tools/happy_path.xml',
+                                 BESPOKE_XSD + r'/tool_config.xsd',
                                  r'Tool')
         
         actual_monocle_tool = test_config['Monocle']
@@ -332,22 +334,22 @@ class ToolConfigTests(TestCase):
         """Verify that you cannot have multiple tools with the same name in a ToolConfig."""
         
         with self.assertRaises(ConfigError) as cm:
-            ToolConfig(r'../configs/tools/duplicate_tools.xml',
-                        r'../../src/bespoke/xsd/tool_config.xsd',
-                        r'Tool')
+            ToolConfig(SHARED_CONFIGS + r'tools/duplicate_tools.xml',
+                       BESPOKE_XSD + r'/tool_config.xsd',
+                       r'Tool')
              
         #Make sure exception contains correct ConfigError information.
         excep = cm.exception
         self.assertEqual(excep.msg, ("Duplicate Tool name 'Monocle' specified, "
                                      "Tool names must be unique!"))
-        self.assertEqual(excep._config_file, r'../configs/tools/duplicate_tools.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'tools/duplicate_tools.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')    
     def test3_tool_no_props(self):
         """Verify that Tools with no Properties are parsed correctly."""
         
-        test_config = ToolConfig(r'../configs/tools/tools_no_props.xml',
-                                 r'../../src/bespoke/xsd/tool_config.xsd',
+        test_config = ToolConfig(SHARED_CONFIGS + r'tools/tools_no_props.xml',
+                                 BESPOKE_XSD + r'/tool_config.xsd',
                                  r'Tool')
         
         actual_tool = test_config['NoProps']
@@ -370,23 +372,23 @@ class ToolConfigTests(TestCase):
         """Verify that the 'no_copy' source type does not accept any properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            ToolConfig(r'../configs/tools/bad_no_copy.xml',
-                       r'../../src/bespoke/xsd/tool_config.xsd',
+            ToolConfig(SHARED_CONFIGS + r'tools/bad_no_copy.xml',
+                       BESPOKE_XSD + r'/tool_config.xsd',
                        r'Tool')
         
         #Make sure exception contains correct ConfigError information.
         excep = cm.exception
         self.assertEqual(excep.msg, ("The Tool 'BadNoCopy' has an error in the Source element: "
                                      "type 'no_copy' cannot have properties!"))
-        self.assertEqual(excep._config_file, r'../configs/tools/bad_no_copy.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'tools/bad_no_copy.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test5_basic_copy_missing_props(self):
         """Verify that the 'basic_copy' source type checks for necessary properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            ToolConfig(r'../configs/tools/missing_basic_copy.xml',
-                       r'../../src/bespoke/xsd/tool_config.xsd',
+            ToolConfig(SHARED_CONFIGS + r'tools/missing_basic_copy.xml',
+                       BESPOKE_XSD + r'/tool_config.xsd',
                        r'Tool')
         
         #Make sure exception contains correct ConfigError information.
@@ -394,15 +396,15 @@ class ToolConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Tool 'MissingBasicCopy' has an error in the Source "
                                      "element: type 'basic_copy' is missing the 'target_path' "
                                      "property!"))
-        self.assertEqual(excep._config_file, r'../configs/tools/missing_basic_copy.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'tools/missing_basic_copy.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')  
     def test6_ftp_copy_bad_props(self):
         """Verify that the 'ftp_copy' type does not accept any properties with invalid values."""
         
         with self.assertRaises(ConfigError) as cm:
-            ToolConfig(r'../configs/tools/bad_ftp_copy.xml',
-                       r'../../src/bespoke/xsd/tool_config.xsd',
+            ToolConfig(SHARED_CONFIGS + r'tools/bad_ftp_copy.xml',
+                       BESPOKE_XSD + r'/tool_config.xsd',
                        r'Tool')
         
         #Make sure exception contains correct ConfigError information.
@@ -410,15 +412,15 @@ class ToolConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Tool 'BadFTPCopy' has an error in the Source element: "
                                      "type 'ftp_copy' has a bad FQDN//IPv4 address for the "
                                      "'source_server' property!"))
-        self.assertEqual(excep._config_file, r'../configs/tools/bad_ftp_copy.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'tools/bad_ftp_copy.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test7_ftp_copy_missing_props(self):
         """Verify that the 'ftp_copy' type checks for necessary properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            ToolConfig(r'../configs/tools/missing_ftp_copy.xml',
-                       r'../../src/bespoke/xsd/tool_config.xsd',
+            ToolConfig(SHARED_CONFIGS + r'tools/missing_ftp_copy.xml',
+                       BESPOKE_XSD + r'/tool_config.xsd',
                        r'Tool')
         
         #Make sure exception contains correct ConfigError information.
@@ -426,15 +428,15 @@ class ToolConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Tool 'MissingFTPCopy' has an error in the Source "
                                      "element: type 'ftp_copy' is missing the "
                                      "'source_server_password' property!"))
-        self.assertEqual(excep._config_file, r'../configs/tools/missing_ftp_copy.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'tools/missing_ftp_copy.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test8_http_copy_bad_props(self):
         """Verify that the 'http_copy' type does not accept any properties with invalid values."""
         
         with self.assertRaises(ConfigError) as cm:
-            ToolConfig(r'../configs/tools/bad_http_copy.xml',
-                       r'../../src/bespoke/xsd/tool_config.xsd',
+            ToolConfig(SHARED_CONFIGS + r'tools/bad_http_copy.xml',
+                       BESPOKE_XSD + r'/tool_config.xsd',
                        r'Tool')
         
         #Make sure exception contains correct ConfigError information.
@@ -442,15 +444,15 @@ class ToolConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Tool 'BadHTTPCopy' has an error in the Source element: "
                                      "type 'http_copy' has a bad FQDN//IPv4 address for the "
                                      "'source_server' property!"))
-        self.assertEqual(excep._config_file, r'../configs/tools/bad_http_copy.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'tools/bad_http_copy.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test9_http_copy_missing_props(self):
         """Verify that the 'http_copy' type checks for necessary properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            ToolConfig(r'../configs/tools/missing_http_copy.xml',
-                       r'../../src/bespoke/xsd/tool_config.xsd',
+            ToolConfig(SHARED_CONFIGS + r'tools/missing_http_copy.xml',
+                       BESPOKE_XSD + r'/tool_config.xsd',
                        r'Tool')
         
         #Make sure exception contains correct ConfigError information.
@@ -458,22 +460,22 @@ class ToolConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Tool 'MissingHTTPCopy' has an error in the Source "
                                      "element: type 'http_copy' is missing the 'target_path' "
                                      "property!"))
-        self.assertEqual(excep._config_file, r'../configs/tools/missing_http_copy.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'tools/missing_http_copy.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!') 
     def test10_no_install_bad_props(self):
         """Verify that the 'no_install' install type does not accept any properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            ToolConfig(r'../configs/tools/bad_no_install.xml',
-                       r'../../src/bespoke/xsd/tool_config.xsd',
+            ToolConfig(SHARED_CONFIGS + r'tools/bad_no_install.xml',
+                       BESPOKE_XSD + r'/tool_config.xsd',
                        r'Tool')
         
         #Make sure exception contains correct ConfigError information.
         excep = cm.exception
         self.assertEqual(excep.msg, ("The Tool 'BadNoInstall' has an error in the InstallMethod "
                                      "element: type 'no_install' cannot have properties!"))
-        self.assertEqual(excep._config_file, r'../configs/tools/bad_no_install.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'tools/bad_no_install.xml')
        
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')  
     def test11_basic_install_bad_props(self):
@@ -481,8 +483,8 @@ class ToolConfigTests(TestCase):
         """
         
         with self.assertRaises(ConfigError) as cm:
-            ToolConfig(r'../configs/tools/bad_basic_install.xml',
-                       r'../../src/bespoke/xsd/tool_config.xsd',
+            ToolConfig(SHARED_CONFIGS + r'tools/bad_basic_install.xml',
+                       BESPOKE_XSD + r'/tool_config.xsd',
                        r'Tool')
         
         #Make sure exception contains correct ConfigError information.
@@ -490,15 +492,15 @@ class ToolConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Tool 'BadBasicInstall' has an error in the InstallMethod "
                                      "element: type 'basic_install' has a bad path for the "
                                      "'source_path' property!"))
-        self.assertEqual(excep._config_file, r'../configs/tools/bad_basic_install.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'tools/bad_basic_install.xml')
     
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')    
     def test12_basic_install_missing_props(self):
         """Verify that the 'basic_install' install type checks for necessary properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            ToolConfig(r'../configs/tools/missing_basic_install.xml',
-                       r'../../src/bespoke/xsd/tool_config.xsd',
+            ToolConfig(SHARED_CONFIGS + r'tools/missing_basic_install.xml',
+                       BESPOKE_XSD + r'/tool_config.xsd',
                        r'Tool')
         
         #Make sure exception contains correct ConfigError information.
@@ -506,7 +508,7 @@ class ToolConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Tool 'MissingBasicInstall' has an error in the "
                                      "InstallMethod element: type 'basic_install' is missing the "
                                      "'source_path' property!"))
-        self.assertEqual(excep._config_file, r'../configs/tools/missing_basic_install.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'tools/missing_basic_install.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test13_msi_install_bad_props(self):
@@ -514,8 +516,8 @@ class ToolConfigTests(TestCase):
         """
         
         with self.assertRaises(ConfigError) as cm:
-            ToolConfig(r'../configs/tools/bad_msi_install.xml',
-                       r'../../src/bespoke/xsd/tool_config.xsd',
+            ToolConfig(SHARED_CONFIGS + r'tools/bad_msi_install.xml',
+                       BESPOKE_XSD + r'/tool_config.xsd',
                        r'Tool')
         
         #Make sure exception contains correct ConfigError information.
@@ -523,15 +525,15 @@ class ToolConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Tool 'BadMSI' has an error in the InstallMethod element:"
                                      " type 'msi_install' has a bad path for the 'source_file' "
                                      "property!"))
-        self.assertEqual(excep._config_file, r'../configs/tools/bad_msi_install.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'tools/bad_msi_install.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test14_msi_install_missing_props(self):
         """Verify that the 'msi_install' install type checks for necessary properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            ToolConfig(r'../configs/tools/missing_msi_install.xml',
-                       r'../../src/bespoke/xsd/tool_config.xsd',
+            ToolConfig(SHARED_CONFIGS + r'tools/missing_msi_install.xml',
+                       BESPOKE_XSD + r'/tool_config.xsd',
                        r'Tool')
         
         #Make sure exception contains correct ConfigError information.
@@ -539,7 +541,7 @@ class ToolConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Tool 'MissingMSI' has an error in the InstallMethod "
                                      "element: type 'msi_install' is missing the 'source_file' "
                                      "property!"))
-        self.assertEqual(excep._config_file, r'../configs/tools/missing_msi_install.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'tools/missing_msi_install.xml')
     
 class BuildConfigTests(TestCase):
     """Tests for the BuildConfig class in the config module."""
@@ -548,8 +550,8 @@ class BuildConfigTests(TestCase):
     def test1_happy_path(self):
         """Happy path test to verify that the BuildConfig class works."""
         
-        test_config = BuildConfig(r'../configs/builds/happy_path.xml',
-                                  r'../../src/bespoke/xsd/build_config.xsd',
+        test_config = BuildConfig(SHARED_CONFIGS + r'builds/happy_path.xml',
+                                  BESPOKE_XSD + r'/build_config.xsd',
                                   r'Build')
         
         actual_monocle_tool = test_config['Monocle']
@@ -646,22 +648,22 @@ class BuildConfigTests(TestCase):
         """Verify that you cannot have multiple builds with the same name in a BuildConfig."""
         
         with self.assertRaises(ConfigError) as cm:
-            BuildConfig(r'../configs/builds/duplicate_builds.xml',
-                        r'../../src/bespoke/xsd/build_config.xsd',
+            BuildConfig(SHARED_CONFIGS + r'builds/duplicate_builds.xml',
+                        BESPOKE_XSD + r'/build_config.xsd',
                         r'Build')
              
         #Make sure exception contains correct ConfigError information.
         excep = cm.exception
         self.assertEqual(excep.msg, ("Duplicate Build name 'Monocle' specified, "
                                      "Build names must be unique!"))
-        self.assertEqual(excep._config_file, r'../configs/builds/duplicate_builds.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'builds/duplicate_builds.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')    
     def test3_build_no_props(self):
         """Verify that Tools with no Properties are parsed correctly."""
         
-        test_config = BuildConfig(r'../configs/builds/builds_no_props.xml',
-                                  r'../../src/bespoke/xsd/build_config.xsd',
+        test_config = BuildConfig(SHARED_CONFIGS + r'builds/builds_no_props.xml',
+                                  BESPOKE_XSD + r'/build_config.xsd',
                                   r'Build')
         
         actual_tool = test_config['NoProps']
@@ -684,23 +686,23 @@ class BuildConfigTests(TestCase):
         """Verify that the 'no_copy' source type does not accept any properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            BuildConfig(r'../configs/builds/bad_no_copy.xml',
-                        r'../../src/bespoke/xsd/build_config.xsd',
+            BuildConfig(SHARED_CONFIGS + r'builds/bad_no_copy.xml',
+                        BESPOKE_XSD + r'/build_config.xsd',
                         r'Build')
         
         #Make sure exception contains correct ConfigError information.
         excep = cm.exception
         self.assertEqual(excep.msg, ("The Build 'BadNoCopy' has an error in the Source element: "
                                      "type 'no_copy' cannot have properties!"))
-        self.assertEqual(excep._config_file, r'../configs/builds/bad_no_copy.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'builds/bad_no_copy.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test5_basic_copy_missing_props(self):
         """Verify that the 'basic_copy' source type checks for necessary properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            BuildConfig(r'../configs/builds/missing_basic_copy.xml',
-                        r'../../src/bespoke/xsd/build_config.xsd',
+            BuildConfig(SHARED_CONFIGS + r'builds/missing_basic_copy.xml',
+                        BESPOKE_XSD + r'/build_config.xsd',
                         r'Build')
         
         #Make sure exception contains correct ConfigError information.
@@ -708,15 +710,15 @@ class BuildConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Build 'MissingBasicCopy' has an error in the Source "
                                      "element: type 'basic_copy' is missing the 'target_path' "
                                      "property!"))
-        self.assertEqual(excep._config_file, r'../configs/builds/missing_basic_copy.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'builds/missing_basic_copy.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')  
     def test6_ftp_copy_bad_props(self):
         """Verify that the 'ftp_copy' type does not accept any properties with invalid values."""
         
         with self.assertRaises(ConfigError) as cm:
-            BuildConfig(r'../configs/builds/bad_ftp_copy.xml',
-                        r'../../src/bespoke/xsd/build_config.xsd',
+            BuildConfig(SHARED_CONFIGS + r'builds/bad_ftp_copy.xml',
+                        BESPOKE_XSD + r'/build_config.xsd',
                         r'Build')
         
         #Make sure exception contains correct ConfigError information.
@@ -724,15 +726,15 @@ class BuildConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Build 'BadFTPCopy' has an error in the Source element: "
                                      "type 'ftp_copy' has a bad FQDN//IPv4 address for the "
                                      "'source_server' property!"))
-        self.assertEqual(excep._config_file, r'../configs/builds/bad_ftp_copy.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'builds/bad_ftp_copy.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test7_ftp_copy_missing_props(self):
         """Verify that the 'ftp_copy' type checks for necessary properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            BuildConfig(r'../configs/builds/missing_ftp_copy.xml',
-                        r'../../src/bespoke/xsd/build_config.xsd',
+            BuildConfig(SHARED_CONFIGS + r'builds/missing_ftp_copy.xml',
+                        BESPOKE_XSD + r'/build_config.xsd',
                         'Build')
         
         #Make sure exception contains correct ConfigError information.
@@ -740,15 +742,15 @@ class BuildConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Build 'MissingFTPCopy' has an error in the Source "
                                      "element: type 'ftp_copy' is missing the "
                                      "'source_server_password' property!"))
-        self.assertEqual(excep._config_file, r'../configs/builds/missing_ftp_copy.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'builds/missing_ftp_copy.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test8_http_copy_bad_props(self):
         """Verify that the 'http_copy' type does not accept any properties with invalid values."""
         
         with self.assertRaises(ConfigError) as cm:
-            BuildConfig(r'../configs/builds/bad_http_copy.xml',
-                        r'../../src/bespoke/xsd/build_config.xsd',
+            BuildConfig(SHARED_CONFIGS + r'builds/bad_http_copy.xml',
+                        BESPOKE_XSD + r'/build_config.xsd',
                         r'Build')
         
         #Make sure exception contains correct ConfigError information.
@@ -756,15 +758,15 @@ class BuildConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Build 'BadHTTPCopy' has an error in the Source element: "
                                      "type 'http_copy' has a bad FQDN//IPv4 address for the "
                                      "'source_server' property!"))
-        self.assertEqual(excep._config_file, r'../configs/builds/bad_http_copy.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'builds/bad_http_copy.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test9_http_copy_missing_props(self):
         """Verify that the 'http_copy' type checks for necessary properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            BuildConfig(r'../configs/builds/missing_http_copy.xml',
-                        r'../../src/bespoke/xsd/build_config.xsd',
+            BuildConfig(SHARED_CONFIGS + r'builds/missing_http_copy.xml',
+                        BESPOKE_XSD + r'/build_config.xsd',
                         r'Build')
         
         #Make sure exception contains correct ConfigError information.
@@ -772,22 +774,22 @@ class BuildConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Build 'MissingHTTPCopy' has an error in the Source "
                                      "element: type 'http_copy' is missing the 'target_path' "
                                      "property!"))
-        self.assertEqual(excep._config_file, r'../configs/builds/missing_http_copy.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'builds/missing_http_copy.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!') 
     def test10_no_install_bad_props(self):
         """Verify that the 'no_install' install type does not accept any properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            BuildConfig(r'../configs/builds/bad_no_install.xml',
-                        r'../../src/bespoke/xsd/build_config.xsd',
+            BuildConfig(SHARED_CONFIGS + r'builds/bad_no_install.xml',
+                        BESPOKE_XSD + r'/build_config.xsd',
                         r'Build')
         
         #Make sure exception contains correct ConfigError information.
         excep = cm.exception
         self.assertEqual(excep.msg, ("The Build 'BadNoInstall' has an error in the InstallMethod "
                                      "element: type 'no_install' cannot have properties!"))
-        self.assertEqual(excep._config_file, r'../configs/builds/bad_no_install.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'builds/bad_no_install.xml')
        
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')  
     def test11_basic_install_bad_props(self):
@@ -795,8 +797,8 @@ class BuildConfigTests(TestCase):
         """
         
         with self.assertRaises(ConfigError) as cm:
-            BuildConfig(r'../configs/builds/bad_basic_install.xml',
-                        r'../../src/bespoke/xsd/build_config.xsd',
+            BuildConfig(SHARED_CONFIGS + r'builds/bad_basic_install.xml',
+                        BESPOKE_XSD + r'/build_config.xsd',
                         r'Build')
         
         #Make sure exception contains correct ConfigError information.
@@ -804,15 +806,15 @@ class BuildConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Build 'BadBasicInstall' has an error in the InstallMethod "
                                      "element: type 'basic_install' has a bad path for the "
                                      "'source_path' property!"))
-        self.assertEqual(excep._config_file, r'../configs/builds/bad_basic_install.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'builds/bad_basic_install.xml')
     
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')    
     def test12_basic_install_missing_props(self):
         """Verify that the 'basic_install' install type checks for necessary properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            BuildConfig(r'../configs/builds/missing_basic_install.xml',
-                        r'../../src/bespoke/xsd/build_config.xsd',
+            BuildConfig(SHARED_CONFIGS + r'builds/missing_basic_install.xml',
+                        BESPOKE_XSD + r'/build_config.xsd',
                         r'Build')
         
         #Make sure exception contains correct ConfigError information.
@@ -820,7 +822,7 @@ class BuildConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Build 'MissingBasicInstall' has an error in the "
                                      "InstallMethod element: type 'basic_install' is missing the "
                                      "'source_path' property!"))
-        self.assertEqual(excep._config_file, r'../configs/builds/missing_basic_install.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'builds/missing_basic_install.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test13_msi_install_bad_props(self):
@@ -828,8 +830,8 @@ class BuildConfigTests(TestCase):
         """
         
         with self.assertRaises(ConfigError) as cm:
-            BuildConfig(r'../configs/builds/bad_msi_install.xml',
-                        r'../../src/bespoke/xsd/build_config.xsd',
+            BuildConfig(SHARED_CONFIGS + r'builds/bad_msi_install.xml',
+                        BESPOKE_XSD + r'/build_config.xsd',
                         r'Build')
         
         #Make sure exception contains correct ConfigError information.
@@ -837,15 +839,15 @@ class BuildConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Build 'BadMSI' has an error in the InstallMethod element:"
                                      " type 'msi_install' has a bad path for the 'source_file' "
                                      "property!"))
-        self.assertEqual(excep._config_file, r'../configs/builds/bad_msi_install.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'builds/bad_msi_install.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test14_msi_install_missing_props(self):
         """Verify that the 'msi_install' install type checks for necessary properties."""
         
         with self.assertRaises(ConfigError) as cm:
-            BuildConfig(r'../configs/builds/missing_msi_install.xml',
-                        r'../../src/bespoke/xsd/build_config.xsd',
+            BuildConfig(SHARED_CONFIGS + r'builds/missing_msi_install.xml',
+                        BESPOKE_XSD + r'/build_config.xsd',
                         r'Build')
         
         #Make sure exception contains correct ConfigError information.
@@ -853,7 +855,7 @@ class BuildConfigTests(TestCase):
         self.assertEqual(excep.msg, ("The Build 'MissingMSI' has an error in the InstallMethod "
                                      "element: type 'msi_install' is missing the 'source_file' "
                                      "property!"))
-        self.assertEqual(excep._config_file, r'../configs/builds/missing_msi_install.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'builds/missing_msi_install.xml')
 
 class TestRunConfigTests(TestCase):
     """Tests for the TestRunConfig class in the config module."""
@@ -862,8 +864,8 @@ class TestRunConfigTests(TestCase):
     def test1_happy_path(self):
         """Happy path test to verify that the TestRunConfig class works."""
         
-        actual = TestRunConfig(r'../configs/test_run/happy_path.xml',
-                               r'../../src/bespoke/xsd/test_run_config.xsd')
+        actual = TestRunConfig(SHARED_CONFIGS + r'test_run/happy_path.xml',
+                               BESPOKE_XSD + r'/test_run_config.xsd')
         
         #Basic information verification
         self.assertEqual(actual['Description'], 'Death Ray Tests')
@@ -886,56 +888,56 @@ class TestRunConfigTests(TestCase):
         """Verify that bad sender email addresses are caught."""
         
         with self.assertRaises(ConfigError) as cm:
-            TestRunConfig(r'../configs/test_run/bad_email_sender.xml',
-                          r'../../src/bespoke/xsd/test_run_config.xsd')
+            TestRunConfig(SHARED_CONFIGS + r'test_run/bad_email_sender.xml',
+                          BESPOKE_XSD + r'/test_run_config.xsd')
         
         #Make sure exception contains correct ConfigError information.
         excep = cm.exception
         self.assertEqual(excep.msg, ('The element "EmailSender" with the text '
                                      '"be@spoke@fancy#@lads.com" has invalid text format!'))
-        self.assertEqual(excep._config_file, r'../configs/test_run/bad_email_sender.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'test_run/bad_email_sender.xml')
     
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test3_bad_email_recipient(self):
         """Verify that bad recipient email addresses are caught."""
         
         with self.assertRaises(ConfigError) as cm:
-            TestRunConfig(r'../configs/test_run/bad_email_recipient.xml',
-                          r'../../src/bespoke/xsd/test_run_config.xsd')
+            TestRunConfig(SHARED_CONFIGS + r'test_run/bad_email_recipient.xml',
+                          BESPOKE_XSD + r'/test_run_config.xsd')
         
         #Make sure exception contains correct ConfigError information.
         excep = cm.exception
         self.assertEqual(excep.msg, ('The element "EmailRecipient" with the text '
                                      '"rg##$@ard@fancylads.com" has invalid text format!'))
-        self.assertEqual(excep._config_file, r'../configs/test_run/bad_email_recipient.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'test_run/bad_email_recipient.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test4_bad_email_server(self):
         """Verify that an invalid email server address is caught."""
         
         with self.assertRaises(ConfigError) as cm:
-            TestRunConfig(r'../configs/test_run/bad_email_server.xml',
-                          r'../../src/bespoke/xsd/test_run_config.xsd')
+            TestRunConfig(SHARED_CONFIGS + r'test_run/bad_email_server.xml',
+                          BESPOKE_XSD + r'/test_run_config.xsd')
         
         #Make sure exception contains correct ConfigError information.
         excep = cm.exception
         self.assertEqual(excep.msg, ('The element "SMTPServer" with the text '
                                      '"bespoke.fancy_____lads..local" has invalid text format!'))
-        self.assertEqual(excep._config_file, r'../configs/test_run/bad_email_server.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'test_run/bad_email_server.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test5_bad_port(self):
         """Verify that an invalid SMTP port is caught."""
         
         with self.assertRaises(ConfigError) as cm:
-            TestRunConfig(r'../configs/test_run/bad_port.xml',
-                          r'../../src/bespoke/xsd/test_run_config.xsd')
+            TestRunConfig(SHARED_CONFIGS + r'test_run/bad_port.xml',
+                          BESPOKE_XSD + r'/test_run_config.xsd')
         
         #Make sure exception contains correct ConfigError information.
         excep = cm.exception
         self.assertEqual(excep.msg, ('The element "SMTPServer" with the attribute "port" has '
                                      'invalid text format for attribute!'))
-        self.assertEqual(excep._config_file, r'../configs/test_run/bad_port.xml')
+        self.assertEqual(excep._config_file, SHARED_CONFIGS + r'test_run/bad_port.xml')
         
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test5_numeric_self_signed(self):
@@ -943,7 +945,7 @@ class TestRunConfigTests(TestCase):
         the "self_signed" attribute.
         """
         
-        actual = TestRunConfig(r'../configs/test_run/numeric_self_signed.xml',
-                               r'../../src/bespoke/xsd/test_run_config.xsd')
+        actual = TestRunConfig(SHARED_CONFIGS + r'test_run/numeric_self_signed.xml',
+                               BESPOKE_XSD + r'/test_run_config.xsd')
         
         self.assertEqual(actual['self_signed'], True)

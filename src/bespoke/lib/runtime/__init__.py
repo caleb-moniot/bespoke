@@ -198,7 +198,7 @@ class ExecuteTestRun(object):
         self._test_script_path = self._global_config['TestScriptPath']
         
         #Parse and load the resource paths if no overrides are specified.
-        if len(self._resource_config_files) == 0:
+        if not self._resource_config_files:
             for config in self._global_config['ResourceConfigs']:
                 self._resource_config_files.append(join(self._config_path, config))
                 

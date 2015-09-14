@@ -20,6 +20,8 @@ from mock import patch
 # Globals
 #===================================================================================================
 SKIP_EVERYTHING = False
+SHARED_CONFIGS = r'../../shared_configs/'
+BESPOKE_XSD = r'../../../src/bespoke/xsd/'
 
 #===================================================================================================
 # Classes
@@ -158,8 +160,8 @@ class ResourceConfigTests(TestCase):
             * No checkpoints
         """
         
-        test_config = ResourceConfig(r'../configs/resource/happy_path_static.xml',
-                                     r'../../src/bespoke/xsd/resource_config.xsd')
+        test_config = ResourceConfig(SHARED_CONFIGS + r'resource/happy_path_static.xml',
+                                     BESPOKE_XSD + r'resource_config.xsd')
         
         actual_vm_1 = test_config['BVT-2k8-R2-64']
         
@@ -183,8 +185,8 @@ class ResourceConfigTests(TestCase):
         the "_content" dictionary.
         """
         
-        test_config = ResourceConfig(r'../configs/resource/happy_path_static.xml',
-                                     r'../../src/bespoke/xsd/resource_config.xsd')
+        test_config = ResourceConfig(SHARED_CONFIGS + r'resource/happy_path_static.xml',
+                                     BESPOKE_XSD + r'resource_config.xsd')
         
         actual_template_1 = test_config['BVT-2k8-R2-64']
         
@@ -197,8 +199,8 @@ class ResourceConfigTests(TestCase):
             * No checkpoints
         """
         
-        test_config = ResourceConfig(r'../configs/resource/tools_static.xml',
-                                     r'../../src/bespoke/xsd/resource_config.xsd')
+        test_config = ResourceConfig(SHARED_CONFIGS + r'resource/tools_static.xml',
+                                     BESPOKE_XSD + r'resource_config.xsd')
         
         #Expected tools
         exp_tools = ['BillyMcToolin', 'ToolMeFaceHole', 'ThoughtBadger']
@@ -225,8 +227,8 @@ class ResourceConfigTests(TestCase):
             * Checkpoints
         """
         
-        test_config = ResourceConfig(r'../configs/resource/checkpoints_static.xml',
-                                     r'../../src/bespoke/xsd/resource_config.xsd')
+        test_config = ResourceConfig(SHARED_CONFIGS + r'resource/checkpoints_static.xml',
+                                     BESPOKE_XSD + r'resource_config.xsd')
         
         #Expected tools
         exp_tools = ['BillyMcToolin', 'ToolMeFaceHole', 'ThoughtBadger']
@@ -257,8 +259,8 @@ class ResourceConfigTests(TestCase):
             * Checkpoints with tools.
         """
         
-        test_config = ResourceConfig(r'../configs/resource/checkpoints_with_tools_static.xml',
-                                     r'../../src/bespoke/xsd/resource_config.xsd')
+        test_config = ResourceConfig(SHARED_CONFIGS + r'resource/checkpoints_with_tools_static.xml',
+                                     BESPOKE_XSD + r'resource_config.xsd')
         
         #Expected tools
         exp_tools = ['BillyMcToolin', 'ToolMeFaceHole', 'ThoughtBadger']
@@ -289,8 +291,8 @@ class ResourceConfigTests(TestCase):
         
         #Attempt to checkout again.
         with self.assertRaises(ConfigError) as cm:
-            ResourceConfig(r'../configs/resource/duplicate_alias_static.xml',
-                           r'../../src/bespoke/xsd/resource_config.xsd')
+            ResourceConfig(SHARED_CONFIGS + r'resource/duplicate_alias_static.xml',
+                           BESPOKE_XSD + r'resource_config.xsd')
             
         excep = cm.exception
         
@@ -302,8 +304,8 @@ class ResourceConfigTests(TestCase):
         
         #Attempt to checkout again.
         with self.assertRaises(ConfigError) as cm:
-            ResourceConfig(r'../configs/resource/duplicate_alias_template.xml',
-                           r'../../src/bespoke/xsd/resource_config.xsd')
+            ResourceConfig(SHARED_CONFIGS + r'resource/duplicate_alias_template.xml',
+                           BESPOKE_XSD + r'resource_config.xsd')
             
         excep = cm.exception
         
@@ -317,8 +319,8 @@ class ResourceConfigTests(TestCase):
         
         #Attempt to checkout again.
         with self.assertRaises(ConfigError) as cm:
-            ResourceConfig(r'../configs/resource/duplicate_alias_mixed.xml',
-                           r'../../src/bespoke/xsd/resource_config.xsd')
+            ResourceConfig(SHARED_CONFIGS + r'resource/duplicate_alias_mixed.xml',
+                           BESPOKE_XSD + r'resource_config.xsd')
             
         excep = cm.exception
         
@@ -330,8 +332,8 @@ class ResourceConfigTests(TestCase):
             * No tools
         """
         
-        test_config = ResourceConfig(r'../configs/resource/happy_path_template.xml',
-                                     r'../../src/bespoke/xsd/resource_config.xsd')
+        test_config = ResourceConfig(SHARED_CONFIGS + r'resource/happy_path_template.xml',
+                                     BESPOKE_XSD + r'resource_config.xsd')
         
         actual_template_1 = test_config['BVT-2k3-R2-32']
         
@@ -357,8 +359,8 @@ class ResourceConfigTests(TestCase):
         the "_content" dictionary.
         """
         
-        test_config = ResourceConfig(r'../configs/resource/happy_path_template.xml',
-                                     r'../../src/bespoke/xsd/resource_config.xsd')
+        test_config = ResourceConfig(SHARED_CONFIGS + r'resource/happy_path_template.xml',
+                                     BESPOKE_XSD + r'resource_config.xsd')
         
         actual_template_1 = test_config['BVT-2k3-R2-32']
         
@@ -370,8 +372,8 @@ class ResourceConfigTests(TestCase):
             * Tools
         """
         
-        test_config = ResourceConfig(r'../configs/resource/tools_template.xml',
-                                     r'../../src/bespoke/xsd/resource_config.xsd')
+        test_config = ResourceConfig(SHARED_CONFIGS + r'resource/tools_template.xml',
+                                     BESPOKE_XSD + r'resource_config.xsd')
         
         #Expected tools
         exp_tools = ['BillyMcToolin', 'ToolMeFaceHole', 'ThoughtBadger']
@@ -400,8 +402,8 @@ class ResourceConfigTests(TestCase):
         
         #Attempt to checkout again.
         with self.assertRaises(ConfigError) as cm:
-            ResourceConfig(r'../configs/resource/missing_ext_config_template.xml',
-                           r'../../src/bespoke/xsd/resource_config.xsd')
+            ResourceConfig(SHARED_CONFIGS + r'resource/missing_ext_config_template.xml',
+                           BESPOKE_XSD + r'resource_config.xsd')
             
         excep = cm.exception
         
@@ -426,8 +428,8 @@ class TestPlanConfigTests(TestCase):
     def test1_happy_path_resource_count(self):
         """Verify that the number of elements is correct in the test case.."""
         
-        test_config = TestPlanConfig(r'../configs/test_plan/happy_path.xml',
-                                     r'../../src/bespoke/xsd/test_plan.xsd',
+        test_config = TestPlanConfig(SHARED_CONFIGS + r'test_plan/happy_path.xml',
+                                     BESPOKE_XSD + r'test_plan.xsd',
                                      self.builds,
                                      self.tools,
                                      self.resources)
@@ -442,8 +444,8 @@ class TestPlanConfigTests(TestCase):
         """Verify that the "TestPrep" elements exist in the right order with the correct
         content."""
         
-        test_config = TestPlanConfig(r'../configs/test_plan/happy_path.xml',
-                                     r'../../src/bespoke/xsd/test_plan.xsd',
+        test_config = TestPlanConfig(SHARED_CONFIGS + r'test_plan/happy_path.xml',
+                                     BESPOKE_XSD + r'test_plan.xsd',
                                      self.builds,
                                      self.tools,
                                      self.resources)
@@ -492,8 +494,8 @@ class TestPlanConfigTests(TestCase):
         """Verify that the "_Installer" elements exist in the right order with the correct
         content."""
         
-        test_config = TestPlanConfig(r'../configs/test_plan/happy_path.xml',
-                                     r'../../src/bespoke/xsd/test_plan.xsd',
+        test_config = TestPlanConfig(SHARED_CONFIGS + r'test_plan/happy_path.xml',
+                                     BESPOKE_XSD + r'test_plan.xsd',
                                      self.builds,
                                      self.tools,
                                      self.resources)
@@ -533,8 +535,8 @@ class TestPlanConfigTests(TestCase):
         """Verify that the "PowerControl" elements exist in the right order with the correct
         content."""
         
-        test_config = TestPlanConfig(r'../configs/test_plan/happy_path.xml',
-                                     r'../../src/bespoke/xsd/test_plan.xsd',
+        test_config = TestPlanConfig(SHARED_CONFIGS + r'test_plan/happy_path.xml',
+                                     BESPOKE_XSD + r'test_plan.xsd',
                                      self.builds,
                                      self.tools,
                                      self.resources)
@@ -579,8 +581,8 @@ class TestPlanConfigTests(TestCase):
         """Verify that the "Step" elements exist in the right order with the correct
         content."""
         
-        test_config = TestPlanConfig(r'../configs/test_plan/happy_path.xml',
-                                     r'../../src/bespoke/xsd/test_plan.xsd',
+        test_config = TestPlanConfig(SHARED_CONFIGS + r'test_plan/happy_path.xml',
+                                     BESPOKE_XSD + r'test_plan.xsd',
                                      self.builds,
                                      self.tools,
                                      self.resources)
@@ -636,8 +638,8 @@ class TestPlanConfigTests(TestCase):
             
         #Attempt to open a config with a bad build.
         with self.assertRaises(ConfigError) as cm:
-            TestPlanConfig(r'../configs/test_plan/bad_build.xml',
-                           r'../../src/bespoke/xsd/test_plan.xsd',
+            TestPlanConfig(SHARED_CONFIGS + r'test_plan/bad_build.xml',
+                           BESPOKE_XSD + r'test_plan.xsd',
                            self.builds,
                            self.tools,
                            self.resources)
@@ -653,8 +655,8 @@ class TestPlanConfigTests(TestCase):
         
         #Attempt to open a config with the same build specified twice.
         with self.assertRaises(ConfigError) as cm:
-            TestPlanConfig(r'../configs/test_plan/duplicate_builds.xml',
-                           r'../../src/bespoke/xsd/test_plan.xsd',
+            TestPlanConfig(SHARED_CONFIGS + r'test_plan/duplicate_builds.xml',
+                           BESPOKE_XSD + r'test_plan.xsd',
                            self.builds,
                            self.tools,
                            self.resources)
@@ -670,8 +672,8 @@ class TestPlanConfigTests(TestCase):
         
         #Attempt to open a config with the same build specified twice.
         with self.assertRaises(ConfigError) as cm:
-            TestPlanConfig(r'../configs/test_plan/bad_tool.xml',
-                           r'../../src/bespoke/xsd/test_plan.xsd',
+            TestPlanConfig(SHARED_CONFIGS + r'test_plan/bad_tool.xml',
+                           BESPOKE_XSD + r'test_plan.xsd',
                            self.builds,
                            self.tools,
                            self.resources)
@@ -687,8 +689,8 @@ class TestPlanConfigTests(TestCase):
         
         #Attempt to open a config with the same tool specified twice.
         with self.assertRaises(ConfigError) as cm:
-            TestPlanConfig(r'../configs/test_plan/duplicate_tools.xml',
-                           r'../../src/bespoke/xsd/test_plan.xsd',
+            TestPlanConfig(SHARED_CONFIGS + r'test_plan/duplicate_tools.xml',
+                           BESPOKE_XSD + r'test_plan.xsd',
                            self.builds,
                            self.tools,
                            self.resources)
@@ -704,8 +706,8 @@ class TestPlanConfigTests(TestCase):
         
         #Attempt to open a config with invalid executable in test step.
         with self.assertRaises(ConfigError) as cm:
-            TestPlanConfig(r'../configs/test_plan/invalid_executable.xml',
-                           r'../../src/bespoke/xsd/test_plan.xsd',
+            TestPlanConfig(SHARED_CONFIGS + r'test_plan/invalid_executable.xml',
+                           BESPOKE_XSD + r'test_plan.xsd',
                            self.builds,
                            self.tools,
                            self.resources)

@@ -49,4 +49,3 @@ class VBoxMachineTests_Non_Portable(TestCase):
         """Verify that a snapshot can be applied to a powered off machine."""
         
         self.test_vm.apply_snapshot('Basic')
-        

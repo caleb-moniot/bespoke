@@ -465,4 +465,3 @@ class VBoxMachineTests_Negative(TestCase):
                                      "snapshot!"))
         self.assertEqual(excep.host, 'localhost')
         self.assertEqual(excep.vm_name, 'fake')
-        
