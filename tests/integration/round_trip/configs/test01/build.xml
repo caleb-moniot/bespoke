@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BuildConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../src/bespoke/xsd/build_config.xsd" version="1">
+  <!--The builds associated with this test plan config.-->
+  <!-- Bespoke 1.0 Installer -->
+  <Build>
+    <Name>Monocle</Name>
+    <Version>1.0</Version>
+    <TargetOS arch_type="x64">Linux</TargetOS>
+    <Source type="no_copy" copy_once="true">
+    </Source>
+    <InstallMethod type="no_install">
+    </InstallMethod>
+  </Build>
+</BuildConfig>

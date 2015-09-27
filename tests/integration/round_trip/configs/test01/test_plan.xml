@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestPlan name="Compiler_Test_Plan" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../src/bespoke/xsd/test_plan.xsd" version="3">
+  
+  <!--Start Test Case-->
+  <TestCase name="test01_basic">
+    <ResourceInit>
+      <PrepareVirtualMachine resource_id="Test_System">
+        <VirtualMachine>bespoke</VirtualMachine>
+        <Checkpoint>Basic</Checkpoint>
+        <Tools />
+        <Builds />
+        <PostWait>5</PostWait>
+        <TimeOut>600</TimeOut>
+        <RestartComputer wait="true">false</RestartComputer>
+      </PrepareVirtualMachine>
+    </ResourceInit>
+    <TestSteps>
+      <Step>
+        <Description>Step 1</Description>
+        <ResourceID>Test_System</ResourceID>
+        <Directory>test_scripts\test01</Directory>
+        <Interpreter>python</Interpreter>
+        <Executable>create_file.py</Executable>
+        <!--All Bespoke environment variables should begin with BS otherwise system env is used -->
+        <ExecParams>
+          <Param name="--resultsPath">%BS|RESULTSPATH%</Param>
+          <Param name="--cwd">%BS|CWD%</Param>
+          <Param name="--hostname">%BS|Test_System%</Param>
+        </ExecParams>
+        <PostWait>5</PostWait>
+        <TimeOut>600</TimeOut>
+        <RestartComputer wait="true">false</RestartComputer>
+      </Step>
+    </TestSteps>
+  </TestCase>
+  <!--End Test Case-->
+</TestPlan>

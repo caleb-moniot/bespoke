@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This config contains the Resources to be used for Bespoke tests. -->
+<ResourceConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../src/bespoke/xsd/resource_config.xsd" version="1">
+  <VirtualMachineHost hypervisor="VirtualBox" host="localhost">
+    <VM>
+      <Alias>bespoke</Alias>
+      <Name>bespoke</Name>
+      <NetworkAddress>bespoke</NetworkAddress>
+      <BespokeRoot>/bespoke</BespokeRoot>
+      <UserName>Administrator</UserName>
+      <Password>password</Password>
+      <OSType arch_type="x64">Linux</OSType>
+      <OSLabel>CentOS 7</OSLabel>
+      <Role>Server</Role>
+      <CheckPoints>
+        <CheckPoint name="Basic"/>
+      </CheckPoints>
+      <Tools />
+    </VM>
+  </VirtualMachineHost>
+</ResourceConfig>

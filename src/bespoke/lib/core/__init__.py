@@ -2108,7 +2108,7 @@ class SystemUnderTest(object):
         try:
             return self._machine.current_state
         except VMError, e:
-            raise CoreError(e.msg, True)
+            raise CoreError(e.msg)
 
     def start(self):
         """Start the SystemUnderTest.
@@ -2126,7 +2126,7 @@ class SystemUnderTest(object):
         try:
             self._machine.start()
         except VMError, e:
-            raise CoreError(e.msg, True)
+            raise CoreError(e.msg)
 
     def stop(self):
         """Stop the SystemUnderTest.
@@ -2144,7 +2144,7 @@ class SystemUnderTest(object):
         try:
             self._machine.stop()
         except VMError, e:
-            raise CoreError(e.msg, True)
+            raise CoreError(e.msg)
 
     def restart(self):
         """Restart the SystemUnderTest.
@@ -2162,7 +2162,7 @@ class SystemUnderTest(object):
         try:
             self._machine.restart()
         except VMError, e:
-            raise CoreError(e.msg, True)
+            raise CoreError(e.msg)
 
     def shutdown(self, wait):
         """Shutdown the SystemUnderTest using ACPI if available.
@@ -2180,7 +2180,7 @@ class SystemUnderTest(object):
         try:
             self._machine.shutdown(wait)
         except VMError, e:
-            raise CoreError(e.msg, True)
+            raise CoreError(e.msg)
 
     def apply_snapshot(self, name):
         """Apply a snapshot to the SystemUnderTest.
@@ -2199,7 +2199,7 @@ class SystemUnderTest(object):
         try:
             self._machine.apply_snapshot(name)
         except VMError, e:
-            raise CoreError(e.msg, True)
+            raise CoreError(e.msg)
 
 class PowerControl(_Test):
     """Send the power events 'shutdown' and 'restart' to the SUT.

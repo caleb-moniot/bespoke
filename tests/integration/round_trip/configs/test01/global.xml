@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- This config contains settings for Bespoke used for all test runs or contains default settings -->
-<GlobalConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xsd\global_config.xsd" version="3">
+<GlobalConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../src/bespoke/xsd/global_config.xsd" version="3">
   
   <!-- Required -->
   <!-- Warning! If not set correctly Bespoke will fail to run. -->
   <BespokeServerHostname>localhost</BespokeServerHostname>
   
   <!-- These paths are all absolute on the Bespoke server -->
-  <ConfigPath>configs</ConfigPath>
-  <TestRunPath>configs</TestRunPath>
-  <TestPlanPath>configs</TestPlanPath>
-  <TestScriptPath>configs</TestScriptPath>
-  <ToolPath>configs</ToolPath>
-  <ResultsPath>configs</ResultsPath>
+  <ConfigPath>configs\test01</ConfigPath>
+  <TestRunPath>configs\test01</TestRunPath>
+  <TestPlanPath>configs\test01</TestPlanPath>
+  <TestScriptPath>test_files\test01</TestScriptPath>
+  <ToolPath>test_files\test01</ToolPath>
+  <ResultsPath>results</ResultsPath>
   
   <!-- UNC Path for TestManager controller resources (Needed for results) -->
   <ResultsURL>\\dummy</ResultsURL>

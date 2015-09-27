@@ -10,7 +10,8 @@
 # ===================================================================================================
 # Imports
 # ===================================================================================================
-from unittest import TestCase, skip
+from unittest import TestCase, skipIf
+from os.path import join
 from bespoke import main
 
 # ===================================================================================================
@@ -18,21 +19,45 @@ from bespoke import main
 # ===================================================================================================
 SKIP_EVERYTHING = False
 CONFIGS = r'configs/'
+XSD_PATH = r'../../../src/bespoke/xsd/'
+
+
+# ===================================================================================================
+# Classes
+# ===================================================================================================
+class FakeArgs(object):
+    """A class for wrapping arguments for ArgParse.
+
+    Args:
+        **kwargs ({str:str}): An arbitrary set of keyword arguments that result in object properties.
+            The keys are the property name with the values being the property data.
+
+    Raises:
+        :class:`ConfigError`: The config file or XSD file were not found.
+    """
+
+    def __init__(self, **kwargs):
+        for key in kwargs:
+            self.__dict__[key] = kwargs[key]
 
 
 # ===================================================================================================
 # Tests
 # ===================================================================================================
-class HappyPath(TestCase):
+class RoundTrip(TestCase):
     """This class contains end-to-end tests for basic functionality."""
 
     @skipIf(SKIP_EVERYTHING, 'Skip if we are creating/modifying tests!')
     def test01_remote_script_no_install(self):
         """Execute a test script on a remote SUT."""
 
-        test_obj = _ConfigAccessor(SHARED_CONFIGS + r'_config/happy_path.xml',
-                                   SHARED_CONFIGS + r'_config/happy_path.xsd')
+        # Init
+        global_cfg = "{}test01/global.xml".format(CONFIGS)
+        test_run_cfg = 'test_run.xml'
+        args = FakeArgs(xsd_path=XSD_PATH,
+                        global_config=global_cfg,
+                        test_run_config=test_run_cfg,
+                        log_path='bespoke.log')
 
-        test_obj.parse_config()
-
-        self.assertIsInstance(test_obj, _Config)
+        # Test
+        self.assertEquals(main(args), 0, 'Test run failed!')

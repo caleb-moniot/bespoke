@@ -317,7 +317,7 @@ class ExecuteTestRun(object):
         
         try:
             for config in self._tools_config_files:
-                tmp_tools.append(ToolConfig(config, self._build_xsd_path, 'Tool').get_content)
+                tmp_tools.append(ToolConfig(config, self._tool_xsd_path, 'Tool').get_content)
         except ConfigError as e:
             err = "Failure to load Tool config file '{0}': {1}".format(e._config_file, e.msg)
             raise ExecutionError(err)
